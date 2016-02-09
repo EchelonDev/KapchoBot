@@ -1,0 +1,40 @@
+{
+  "134672885435334656": {
+    "status": "AFK",
+    "time": "Wed Feb 03 2016 12:45:54 GMT+0000 (UTC)",
+    "channel": "138973655228088320",
+    "message": "yemek",
+    "afkTime": false
+  },
+  "135014921472704512": {
+    "status": "AFKT",
+    "time": "Thu Feb 04 2016 21:25:17 GMT+0000 (UTC)",
+    "channel": "134666472864743424",
+    "message": "",
+    "afkTime": {
+      "hours": false,
+      "minutes": "5"
+    }
+  },
+  "136158987899895809": {
+    "status": "AFK",
+    "time": "Mon Feb 08 2016 20:59:15 GMT+0000 (UTC)",
+    "channel": "134666472864743424",
+    "message": false,
+    "afkTime": false
+  },
+  "135123411792953344": {
+    "status": "AFK",
+    "time": "Tue Feb 09 2016 14:50:15 GMT+0000 (UTC)",
+    "channel": "134666472864743424",
+    "message": "telefondayım summonlamak için mention atın",
+    "afkTime": false
+  },
+  "134987945827368960": {
+    "status": "AFK",
+    "time": "Tue Feb 09 2016 17:38:04 GMT+0000 (UTC)",
+    "channel": "134666472864743424",
+    "message": "film",
+    "afkTime": false
+  }
+}
