@@ -511,11 +511,11 @@ var commands = {
         description: "Prints the stats from the instance into the chat.",
         process: function(bot, msg, suffix) {
             if(checkPermission(msg.sender.id,"dev")) {
-              bot.sendMeesage(msg.channel,"**brb**");
+              bot.sendMessage(msg.channel,"**brb**");
               exec("pm2 restart all", puts);
-              bot.sendMeesage(msg.channel,"**failed ?**");
+              bot.sendMessage(msg.channel,"**failed ?**");
             } else {
-              bot.sendMeesage(msg.channel,"**not permitted**");
+              bot.sendMessage(msg.channel,"**not permitted**");
             }
         }
     },
