@@ -6,7 +6,11 @@ var logger = log4js.getLogger('cheese');
 // <Variables> {
 var afkList         = {},
     alias           = {},
-    version         = "1.1.5dev",
+<<<<<<< HEAD
+    version         = "1.1.9dev",
+=======
+    version         = "1.1.8dev",
+>>>>>>> refs/remotes/origin/master
     banned          = {},
     ChangeBot       = {},
     Config          = {},
@@ -18,7 +22,8 @@ var afkList         = {},
     Permissions     = {},
     Rules           = {},
     selfMention     = false,
-    WhoList         = {};
+    WhoList         = {},
+    prefix          = '!';
 //}
 // <Requires> {
 try {
@@ -136,9 +141,9 @@ function ban(msg, user, h) {
     };
     updateBanned();
     if(h) {
-        bot.sendMessage(msg.channel, "**<@" + user + "> adlı kullanıcı bot komutlarını " + h + " saat kullanamayacaktır.**");
+        bot.sendMessage(msg.channel, "**<@" + user + "> isimli kullanıcı bot komutlarını " + h + " saat kullanamayacaktır.**");
     } else {
-        bot.sendMessage(msg.channel, "**<@" + user + "> adlı kullanıcı bot komutlarını süresiz kullanamayacaktır.**");
+        bot.sendMessage(msg.channel, "**<@" + user + "> isimli kullanıcı bot komutlarını süresiz kullanamayacaktır.**");
     }
 }
 
@@ -1283,7 +1288,7 @@ bot.on("message", function (msg) {
         getBeatmapDetail(id,msg.channel,mode);
 
     }
-	if(msg.author.id != bot.user.id && (msg.content[0] === '!' || msg.content.indexOf(bot.user.mention()) == 0)) {
+	if(msg.author.id != bot.user.id && (msg.content[0] === prefix || msg.content.indexOf(bot.user.mention()) == 0)) {
 	    if(banned.hasOwnProperty(msg.sender.id)) {
             if(banned[msg.sender.id].permanent) {
                 bot.sendMessage(msg.channel, "**" + msg.sender + ", bot komutlarını kullanmanız süresiz yasaklanmıştır.**");
