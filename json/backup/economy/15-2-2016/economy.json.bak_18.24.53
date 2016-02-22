@@ -1,0 +1,44 @@
+{
+  "141930048713261057": {
+    "money": 0,
+    "played": false,
+    "time": "Sat Feb 13 2016 17:24:54 GMT+0000 (UTC)",
+    "slotTime": "Sat Feb 13 2016 17:28:43 GMT+0000 (UTC)"
+  },
+  "142672240494772224": {
+    "money": 0,
+    "played": false,
+    "time": "Sun Feb 14 2016 10:39:14 GMT+0000 (UTC)",
+    "slotTime": "Sun Feb 14 2016 10:39:16 GMT+0000 (UTC)"
+  },
+  "134987945827368960": {
+    "money": 4500,
+    "played": false,
+    "time": "Sun Feb 14 2016 19:54:11 GMT+0000 (UTC)",
+    "slotTime": "Sun Feb 14 2016 19:54:13 GMT+0000 (UTC)"
+  },
+  "90076279646212096": {
+    "money": 2000,
+    "played": false,
+    "time": "Sun Feb 14 2016 12:28:35 GMT+0000 (UTC)",
+    "slotTime": "Sun Feb 14 2016 12:28:35 GMT+0000 (UTC)"
+  },
+  "136863941480415233": {
+    "money": 2.5,
+    "played": false,
+    "time": "Mon Feb 15 2016 17:12:30 GMT+0000 (UTC)",
+    "slotTime": "Mon Feb 15 2016 17:15:36 GMT+0000 (UTC)"
+  },
+  "140867012225138689": {
+    "money": 2000,
+    "played": false,
+    "time": "Mon Feb 15 2016 17:12:34 GMT+0000 (UTC)",
+    "slotTime": "Mon Feb 15 2016 17:12:34 GMT+0000 (UTC)"
+  },
+  "111476801762537472": {
+    "money": 2000,
+    "played": false,
+    "time": "Mon Feb 15 2016 17:14:10 GMT+0000 (UTC)",
+    "slotTime": "Mon Feb 15 2016 17:14:10 GMT+0000 (UTC)"
+  }
+}

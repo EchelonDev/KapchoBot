@@ -1,0 +1,35 @@
+/*if(afkList.hasOwnProperty(msg.sender.id) && !isAfkCommand(msg.content)){
+		if(afkList[msg.sender.id].status === "AFK") {
+			var date1 = afkList[msg.sender.id].time;
+			var afkTime = timediff(date1, Date());
+			delete afkList[msg.sender.id];
+			updateAfkList();
+			var reply = "**" + msg.sender + " artık AFK değil,";
+
+			var isAfter = 0;
+
+			if(afkTime.hours) {
+				if(!isAfter) {
+					isAfter = 1;
+				}
+				reply += " " + afkTime.hours + " saat";
+			}
+			if(afkTime.minutes) {
+				if(!isAfter) {
+					isAfter = 1;
+				}
+				reply+= " " + afkTime.minutes + " dakika";
+			}
+			if(afkTime.seconds) {
+				if(!isAfter) {
+					isAfter = 1;
+				}
+				reply+= " " + afkTime.seconds + " saniye";
+			}
+			if(isAfter)
+			reply+= " sonra";
+
+			reply += " geri döndü.**";!
+			bot.sendMessage(msg.channel, reply);
+		}
+	}*/

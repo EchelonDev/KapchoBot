@@ -1,0 +1,24 @@
+{
+  "name": "kapkeybot",
+  "version": "1.0.0",
+  "description": "Bot for Discord app",
+  "readme": "README.md",
+  "maintainers": [],
+  "author": "EchelonDev && bgrcdnc",
+  "repository": {},
+  "license": "GNU",
+  "dependencies": {
+    "countryjs": "1.5.2",
+    "discord.js": "hydrabolt/discord.js#indev",
+    "log4js": "0.6.31",
+    "node-twitchtv": "jbueza/node-twitchtv",
+    "nodesu": "^0.2.1",
+    "request": ">=2.58.0",
+    "underscore": "1.8.x",
+    "winston": "2.1.1"
+  },
+  "scripts": {
+    "start": "node discord_bot.js"
+  },
+  "main": "discord_bot.js"
+}
