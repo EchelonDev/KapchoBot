@@ -1,5 +1,6 @@
 json/auth*.json
 *.bat
+/.c9/
 
 # Windows image file caches
 Thumbs.db
