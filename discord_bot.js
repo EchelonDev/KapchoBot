@@ -513,7 +513,6 @@ var commands = {
             if(checkPermission(msg.sender.id,"dev")) {
               bot.sendMessage(msg.channel,"**brb**");
               exec("pm2 restart all", puts);
-              bot.sendMessage(msg.channel,"**failed ?**");
             } else {
               bot.sendMessage(msg.channel,"**not permitted**");
             }
