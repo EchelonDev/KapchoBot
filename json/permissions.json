@@ -1,0 +1,31 @@
+{
+  "global": {
+    "eval": false
+  },
+  "users": {
+    "134987945827368960": {
+      "ekonomi": true,
+      "kural": true,
+      "who": true,
+      "dev": true,
+      "say": true,
+      "admin": true
+    },
+    "111476801762537472": {
+      "ekonomi": true,
+      "kural": true,
+      "who": true,
+      "dev": true,
+      "say": true,
+      "admin": true
+    },
+    "90076279646212096": {
+      "ekonomi": true,
+      "kural": true,
+      "who": true,
+      "dev": true,
+      "say": true,
+      "admin": true
+    }
+  }
+}
