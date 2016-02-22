@@ -515,6 +515,8 @@ var commands = {
               function puts(error, stdout, stderr) { logger.debug(stdout) }
               exec("pm2 restart all", puts);
               bot.sendMeesage(msg.channel,"**failed ?**");
+            } else {
+              bot.sendMeesage(msg.channel,"**not permitted**");
             }
         }
     },
