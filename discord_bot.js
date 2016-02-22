@@ -6,7 +6,7 @@ var logger = log4js.getLogger('cheese');
 // <Variables> {
 var afkList         = {},
     alias           = {},
-    version         = "1.1.7dev",
+    version         = "1.1.8dev",
     banned          = {},
     ChangeBot       = {},
     Config          = {},
@@ -137,9 +137,9 @@ function ban(msg, user, h) {
     };
     updateBanned();
     if(h) {
-        bot.sendMessage(msg.channel, "**<@" + user + "> adlı kullanıcı bot komutlarını " + h + " saat kullanamayacaktır.**");
+        bot.sendMessage(msg.channel, "**<@" + user + "> isimli kullanıcı bot komutlarını " + h + " saat kullanamayacaktır.**");
     } else {
-        bot.sendMessage(msg.channel, "**<@" + user + "> adlı kullanıcı bot komutlarını süresiz kullanamayacaktır.**");
+        bot.sendMessage(msg.channel, "**<@" + user + "> isimli kullanıcı bot komutlarını süresiz kullanamayacaktır.**");
     }
 }
 
