@@ -507,6 +507,16 @@ var commands = {
           }
       }
     },
+    "restart": {
+        hidden:"1",
+        description: "Prints the stats from the instance into the chat.",
+        process: function(bot, msg, suffix) {
+            if(checkPermission(msg.sender.id,"dev")) {
+              function puts(error, stdout, stderr) { sys.puts(stdout) }
+              exec("pm2 restart", puts);
+            }
+        }
+    },
     "stats": {
         hidden:"1",
         description: "Prints the stats from the instance into the chat.",
