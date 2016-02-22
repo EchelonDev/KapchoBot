@@ -47,7 +47,6 @@ var fs              = require('fs'),
     TwitchClient    = require("node-twitchtv"),
     Osu             = require('nodesu'),
     country         = require('countryjs'),
-    sys             = require('sys'),
     exec            = require('child_process').exec;
 
 
@@ -512,7 +511,7 @@ var commands = {
         description: "Prints the stats from the instance into the chat.",
         process: function(bot, msg, suffix) {
             if(checkPermission(msg.sender.id,"dev")) {
-              function puts(error, stdout, stderr) { sys.puts(stdout) }
+              function puts(error, stdout, stderr) { logger.debug(stdout) }
               exec("pm2 restart all", puts);
               bot.sendMeesage(msg.channel,"**brb**");
             }
@@ -1276,7 +1275,7 @@ bot.on("ready", function () {
 
 bot.on("disconnected", function () {
 	logger.debug("Disconnected!");
-  function puts(error, stdout, stderr) { sys.puts(stdout) }
+  function puts(error, stdout, stderr) { logger.debug(stdout) }
   exec("pm2 restart all", puts);
 });
 
