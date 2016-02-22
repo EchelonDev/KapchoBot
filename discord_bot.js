@@ -6,11 +6,7 @@ var logger = log4js.getLogger('cheese');
 // <Variables> {
 var afkList         = {},
     alias           = {},
-<<<<<<< HEAD
     version         = "1.1.9dev",
-=======
-    version         = "1.1.8dev",
->>>>>>> refs/remotes/origin/master
     banned          = {},
     ChangeBot       = {},
     Config          = {},
@@ -50,7 +46,9 @@ var fs              = require('fs'),
     request         = require("request"),
     TwitchClient    = require("node-twitchtv"),
     Osu             = require('nodesu'),
-    country         = require('countryjs');
+    country         = require('countryjs'),
+    sys             = require('sys'),
+    exec            = require('child_process').exec;
 
 
 //}
@@ -1267,7 +1265,8 @@ bot.on("ready", function () {
 
 bot.on("disconnected", function () {
 	logger.debug("Disconnected!");
-	process.exit(1); //exit node.js with an error
+  function puts(error, stdout, stderr) { sys.puts(stdout) }
+  exec("pm2 restart", puts);
 });
 
 bot.on("message", function (msg) {
