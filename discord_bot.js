@@ -233,7 +233,7 @@ function load_plugins(){
 	}
 	logger.debug("Loaded " + Object.keys(commands).length + " chat commands.")
 }
-
+function puts(error, stdout, stderr) { logger.debug(stdout) }
 function checkPermission(user,permission){
 	try {
 
@@ -512,7 +512,6 @@ var commands = {
         process: function(bot, msg, suffix) {
             if(checkPermission(msg.sender.id,"dev")) {
               bot.sendMeesage(msg.channel,"**brb**");
-              function puts(error, stdout, stderr) { logger.debug(stdout) }
               exec("pm2 restart all", puts);
               bot.sendMeesage(msg.channel,"**failed ?**");
             } else {
@@ -1278,7 +1277,6 @@ bot.on("ready", function () {
 
 bot.on("disconnected", function () {
 	logger.debug("Disconnected!");
-  function puts(error, stdout, stderr) { logger.debug(stdout) }
   exec("pm2 restart all", puts);
 });
 
