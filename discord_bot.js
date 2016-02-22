@@ -514,6 +514,7 @@ var commands = {
             if(checkPermission(msg.sender.id,"dev")) {
               function puts(error, stdout, stderr) { sys.puts(stdout) }
               exec("pm2 restart", puts);
+              bot.sendMeesage(msg.channel,"**brb**");
             }
         }
     },
