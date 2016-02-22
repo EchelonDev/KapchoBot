@@ -18,7 +18,8 @@ var afkList         = {},
     Permissions     = {},
     Rules           = {},
     selfMention     = false,
-    WhoList         = {};
+    WhoList         = {},
+    prefix          = '!';
 //}
 // <Requires> {
 try {
@@ -46,8 +47,8 @@ var fs              = require('fs'),
     TwitchClient    = require("node-twitchtv"),
     Osu             = require('nodesu'),
     country         = require('countryjs');
-    
-    
+
+
 //}
 // <JSON> {
 try {
@@ -123,12 +124,12 @@ function ban(msg, user, h) {
         bot.sendMessage(msg.channel, "**Bu kullanıcı engellenemez.**");
         return;
     }
-    
+
     var perm = true;
     if(h) {
         perm = false;
     }
-    
+
     banned[user] = {
         permanent: perm,
         time: Date(),
@@ -535,7 +536,7 @@ var commands = {
                             msgArray.push("Server sahibi: " + msg.channel.server.owner + " (ID: " + msg.channel.server.owner.id + ")\n");
                             if (msg.channel.topic) { msgArray.push("Kanal konusu: " + msg.channel.topic); }
                             bot.sendMessage(msg.channel, msgArray);
-                        
+
                     }
                     else{
                         bot.sendMessage(msg, "PM den çalışmıyor , pki tm tşk.");
@@ -888,7 +889,7 @@ var commands = {
                     bot.sendMessage(msg.channel, "!osu komutuna en az 3 harflik bir parametre vermeniz gerekiyor. \"!osu peppy \" veya \"!osu peppy mania\" gibi. ");
                 }
                 download(req,"osu.png",function() {
-                   bot.sendFile(msg.channel,"osu.png"); 
+                   bot.sendFile(msg.channel,"osu.png");
                 });
             }
             catch(e) {
@@ -1281,9 +1282,9 @@ bot.on("message", function (msg) {
         var numb = txt.match(/\d/g);
         var id = numb.join("");
         getBeatmapDetail(id,msg.channel,mode);
-        
+
     }
-	if(msg.author.id != bot.user.id && (msg.content[0] === '!' || msg.content.indexOf(bot.user.mention()) == 0)) {
+	if(msg.author.id != bot.user.id && (msg.content[0] === prefix || msg.content.indexOf(bot.user.mention()) == 0)) {
 	    if(banned.hasOwnProperty(msg.sender.id)) {
             if(banned[msg.sender.id].permanent) {
                 bot.sendMessage(msg.channel, "**" + msg.sender + ", bot komutlarını kullanmanız süresiz yasaklanmıştır.**");
@@ -1398,7 +1399,7 @@ bot.on("message", function (msg) {
         if(msg.author == bot.user){
             return;
         }
-        
+
         if(msg.mentions.length > 0 && msg.sender.id !== bot.user.id && msg.content.indexOf(bot.user.mention()) === -1) {
 		    var users = msg.mentions;
 		    var length = msg.mentions.length;
@@ -1439,7 +1440,7 @@ bot.on("message", function (msg) {
 		        }
 		    }
 	    }
-        
+
         if(banned.hasOwnProperty(msg.sender.id)) {
             if(banned[msg.sender.id].permanent) {
                 return;
@@ -1455,7 +1456,7 @@ bot.on("message", function (msg) {
                 }
             }
         }
-        
+
         if(msg.content.toLowerCase() == "sa" || msg.content.toLowerCase() == "s.a." || msg.content.toLowerCase() == "selamun aleyküm" || msg.content.toLowerCase() == "selamün aleyküm") {
             bot.sendMessage(msg.channel,"Aleyküm Selam " + msg.sender + " Hoşgeldin !");
         }
@@ -1511,7 +1512,7 @@ if(isset(AuthDetails.logtoken)) {
                 updateAuth();
             }
         } catch(e) {
-            
+
         }
     });
 }
