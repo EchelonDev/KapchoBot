@@ -511,9 +511,10 @@ var commands = {
         description: "Prints the stats from the instance into the chat.",
         process: function(bot, msg, suffix) {
             if(checkPermission(msg.sender.id,"dev")) {
+              bot.sendMeesage(msg.channel,"**brb**");
               function puts(error, stdout, stderr) { logger.debug(stdout) }
               exec("pm2 restart all", puts);
-              bot.sendMeesage(msg.channel,"**brb**");
+              bot.sendMeesage(msg.channel,"**failed ?**");
             }
         }
     },
