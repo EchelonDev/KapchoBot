@@ -513,7 +513,7 @@ var commands = {
         process: function(bot, msg, suffix) {
             if(checkPermission(msg.sender.id,"dev")) {
               function puts(error, stdout, stderr) { sys.puts(stdout) }
-              exec("pm2 restart", puts);
+              exec("pm2 restart all", puts);
               bot.sendMeesage(msg.channel,"**brb**");
             }
         }
@@ -1277,7 +1277,7 @@ bot.on("ready", function () {
 bot.on("disconnected", function () {
 	logger.debug("Disconnected!");
   function puts(error, stdout, stderr) { sys.puts(stdout) }
-  exec("pm2 restart", puts);
+  exec("pm2 restart all", puts);
 });
 
 bot.on("message", function (msg) {
