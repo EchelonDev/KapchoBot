@@ -565,7 +565,7 @@ var commands = {
         description:"",
         process: function(bot,msg,suffix) {
             try {
-                if(checkPermission(msg.sender.id, "admin")) {
+                if(checkPermission(msg.sender.id, "admin") || checkRole("GrimBoyz",msg.sender.id,"Babalar") || checkRole("GrimBoyz",msg.sender.id,"Dedeler")) {
                     if(suffix && suffix.startsWith('<@') && suffix.indexOf('>') > -1) {
                         var args = suffix.split(' ');
                         var user = args.shift();
@@ -593,7 +593,7 @@ var commands = {
         description:"",
         process: function(bot,msg,suffix) {
             try {
-                if(checkPermission(msg.sender.id, "admin")) {
+                if(checkPermission(msg.sender.id, "admin") || checkRole("GrimBoyz",msg.sender.id,"Babalar") || checkRole("GrimBoyz",msg.sender.id,"Dedeler")) {
                     if(suffix && suffix.startsWith('<@') && suffix.indexOf('>') > -1) {
                         suffix = suffix.substring(suffix.indexOf('<@'), suffix.indexOf('>'));
                         suffix = suffix.replace("<@","");
@@ -842,7 +842,7 @@ var commands = {
             try {
                 logger.debug("Sending !who to " + msg.channel);
                 if(suffix.startsWith("add ")) {
-                    if(checkPermission(msg.sender.id, "who")) {
+                    if(checkPermission(msg.sender.id, "who") || checkRole("GrimBoyz",msg.sender.id,"Babalar") || checkRole("GrimBoyz",msg.sender.id,"Dedeler")) {
                         var args = suffix.split(' ');
                         args.shift();
 			            var user = args.shift();
@@ -854,7 +854,7 @@ var commands = {
                     bot.sendMessage(msg.channel,"**Sen benim babam değilsin !!!**");
                     }
                 } else if(suffix.startsWith("delete ")) {
-                    if(checkPermission(msg.sender.id, "who")) {
+                    if(checkPermission(msg.sender.id, "who") || checkRole("GrimBoyz",msg.sender.id,"Babalar") || checkRole("GrimBoyz",msg.sender.id,"Dedeler")) {
                         var args = suffix.split(' ');
                         args.shift();
 			            var user = args.shift();
