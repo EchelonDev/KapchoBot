@@ -565,7 +565,7 @@ var commands = {
         description:"",
         process: function(bot,msg,suffix) {
             try {
-                if(checkPermission(msg.sender.id, "admin") || checkRole("GrimBoyz",msg.sender.id,"Babalar") || checkRole("GrimBoyz",msg.sender.id,"Dedeler")) {
+                if(checkPermission(msg.sender.id, "admin") || checkRole(msg.channel.server.id,msg.sender.id,"Babalar") || checkRole(msg.channel.server.id,msg.sender.id,"Dedeler")) {
                     if(suffix && suffix.startsWith('<@') && suffix.indexOf('>') > -1) {
                         var args = suffix.split(' ');
                         var user = args.shift();
@@ -593,7 +593,7 @@ var commands = {
         description:"",
         process: function(bot,msg,suffix) {
             try {
-                if(checkPermission(msg.sender.id, "admin") || checkRole("GrimBoyz",msg.sender.id,"Babalar") || checkRole("GrimBoyz",msg.sender.id,"Dedeler")) {
+                if(checkPermission(msg.sender.id, "admin") || checkRole(msg.channel.server.id,msg.sender.id,"Babalar") || checkRole(msg.channel.server.id,msg.sender.id,"Dedeler")) {
                     if(suffix && suffix.startsWith('<@') && suffix.indexOf('>') > -1) {
                         suffix = suffix.substring(suffix.indexOf('<@'), suffix.indexOf('>'));
                         suffix = suffix.replace("<@","");
@@ -842,7 +842,7 @@ var commands = {
             try {
                 logger.debug("Sending !who to " + msg.channel);
                 if(suffix.startsWith("add ")) {
-                    if(checkPermission(msg.sender.id, "who") || checkRole("GrimBoyz",msg.sender.id,"Babalar") || checkRole("GrimBoyz",msg.sender.id,"Dedeler")) {
+                    if(checkPermission(msg.sender.id, "who") || checkRole(msg.channel.server.id,msg.sender.id,"Babalar") || checkRole(msg.channel.server.id,msg.sender.id,"Dedeler")) {
                         var args = suffix.split(' ');
                         args.shift();
 			            var user = args.shift();
@@ -854,7 +854,7 @@ var commands = {
                     bot.sendMessage(msg.channel,"**Sen benim babam değilsin !!!**");
                     }
                 } else if(suffix.startsWith("delete ")) {
-                    if(checkPermission(msg.sender.id, "who") || checkRole("GrimBoyz",msg.sender.id,"Babalar") || checkRole("GrimBoyz",msg.sender.id,"Dedeler")) {
+                    if(checkPermission(msg.sender.id, "who") || checkRole(msg.channel.server.id,msg.sender.id,"Babalar") || checkRole(msg.channel.server.id,msg.sender.id,"Dedeler")) {
                         var args = suffix.split(' ');
                         args.shift();
 			            var user = args.shift();
@@ -1284,7 +1284,7 @@ bot.on("message", function (msg) {
     //    bot.sendMessage(msg.sender, "**PM den komut kabul etmiyoruz, söri.**");
     //    return;
     //}
-    //if(msg.channel.server.id == "GrimBoyz") {
+    //if(msg.channel.server.id == msg.channel.server.id) {
     //    return;
     //}
     if(msg.author.id != bot.user.id && checklink(msg.content)) {
