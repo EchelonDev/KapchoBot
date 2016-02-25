@@ -706,9 +706,28 @@ var commands = {
 				                }
 				            };
 				            updateAfkList();
-				            if(h && m) bot.sendMessage(msg.channel, "**" + msg.sender + " " + h + " saat " + m + " dakika boyunca AFK.**");
-				            else if(h) bot.sendMessage(msg.channel, "**" + msg.sender + " " + h + " saat boyunca AFK.**");
-				            else if(m) bot.sendMessage(msg.channel, "**" + msg.sender + " " + m + " dakika boyunca AFK.**");
+				            if(h && m) {
+				                if(h > 250 || m > 250*60) {
+				                    bot.sendMessage(msg.channel, "**" + msg.sender + " öldü.**");
+				                } else {
+				                    bot.sendMessage(msg.channel, "**" + msg.sender + " " + h + " saat " + m + " dakika boyunca AFK.**");
+				                }
+				                
+				            }
+				            else if(h) {
+				                if(h > 250) {
+				                    bot.sendMessage(msg.channel, "**" + msg.sender + " öldü.**");
+				                } else {
+				                    bot.sendMessage(msg.channel, "**" + msg.sender + " " + h + " saat boyunca AFK.**");
+				                }
+				            }
+				            else if(m) {
+				                if(m > 250*60) {
+				                    bot.sendMessage(msg.channel, "**" + msg.sender + " öldü.**");
+				                } else {
+				                    bot.sendMessage(msg.channel, "**" + msg.sender + " " +  m + " dakika boyunca AFK.**");
+				                }
+				            }
 				            else bot.sendMessage(msg.channel, "**" + msg.sender + " artık AFK.** (<@134987945827368960> mümkün olmayan kod)");
 			            }
 			            else {
@@ -901,8 +920,8 @@ var commands = {
                     logger.debug("parameter problem in !osu at " + msg.channel);
                     bot.sendMessage(msg.channel, "!osu komutuna en az 3 harflik bir parametre vermeniz gerekiyor. \"!osu peppy \" veya \"!osu peppy mania\" gibi. ");
                 }
-                download(req,"osu.png",function() {
-                   bot.sendFile(msg.channel,"osu.png");
+                download(req,"caps/osu.png",function() {
+                   bot.sendFile(msg.channel,"caps/osu.png");
                 });
             }
             catch(e) {
@@ -1489,12 +1508,13 @@ bot.on("message", function (msg) {
     }
 });
 
-bot.on("presence", function(user,status,gameId) {
+bot.on("presence", function(oldUser, newUser) {
 	//if(status === "online"){
 	//logger.debug("presence update");
 	//}
 	try{
-	    if(status != 'offline'){
+	    var user = newUser;
+	    if(user.status != 'offline'){
 	    	if(messagebox.hasOwnProperty(user.id)){
 	    		logger.debug("found message for " + user.id);
 	    		var message = messagebox[user.id];
@@ -1504,7 +1524,7 @@ bot.on("presence", function(user,status,gameId) {
 	    		bot.sendMessage(channel,message.content);
 	    	}
 	    }
-	    if(status == 'offline') {
+	    if(user.status == 'offline') {
 	    	if(afkList.hasOwnProperty(user.id)) {
 	    		var channel = bot.channels.get("id", afkList[user.id].channel);
 	    		bot.sendMessage(channel,"**"+ user + " AFK iken Discord'dan çıktı.**");
