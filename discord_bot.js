@@ -707,7 +707,7 @@ var commands = {
 				            };
 				            updateAfkList();
 				            if(h && m) {
-				                if(h > 250 || m > 250*60) {
+				                if(h > 8760 || m > 8760*60) {
 				                    bot.sendMessage(msg.channel, "**" + msg.sender + " öldü.**");
 				                } else {
 				                    bot.sendMessage(msg.channel, "**" + msg.sender + " " + h + " saat " + m + " dakika boyunca AFK.**");
@@ -715,14 +715,14 @@ var commands = {
 				                
 				            }
 				            else if(h) {
-				                if(h > 250) {
+				                if(h > 8760) {
 				                    bot.sendMessage(msg.channel, "**" + msg.sender + " öldü.**");
 				                } else {
 				                    bot.sendMessage(msg.channel, "**" + msg.sender + " " + h + " saat boyunca AFK.**");
 				                }
 				            }
 				            else if(m) {
-				                if(m > 250*60) {
+				                if(m > 8760) {
 				                    bot.sendMessage(msg.channel, "**" + msg.sender + " öldü.**");
 				                } else {
 				                    bot.sendMessage(msg.channel, "**" + msg.sender + " " +  m + " dakika boyunca AFK.**");
