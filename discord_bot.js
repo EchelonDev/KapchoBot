@@ -694,6 +694,12 @@ var commands = {
 			            if(h && numcon(t.substring(t.indexOf('s') + 1, t.indexOf('d'))))
 			                m = t.substring(t.indexOf('s') + 1, t.indexOf('d'));
 
+                  if(m > 60) {
+                    if(!h) h = 0;
+                    h += m / 60;
+                    m %= 60;
+                  }
+
 			            if(h || m) {
 				            afkList[msg.sender.id] = {
 				                status: "AFKT",
@@ -712,7 +718,7 @@ var commands = {
 				                } else {
 				                    bot.sendMessage(msg.channel, "**" + msg.sender + " " + h + " saat " + m + " dakika boyunca AFK.**");
 				                }
-				                
+
 				            }
 				            else if(h) {
 				                if(h > 8760) {
