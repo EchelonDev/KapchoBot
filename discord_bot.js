@@ -388,7 +388,20 @@ function checkRole(serverid, user, role) {
 //}
 // <Commands> {
 var commands = {
+  "eval": {
+    hidden:"1",
+		usage: "<command>",
+		description: 'Executes arbitrary javascript in the bot process. User must have "eval" permission',
+		process: function(bot,msg,suffix) {
+			if(Permissions.checkPermission(msg.sender.id,"dev")){
+				bot.sendMessage(msg.channel, eval(suffix,bot));
+			} else {
+				bot.sendMessage(msg.channel, msg.author + " doesn't have permission to execute eval!");
+			}
+		}
+	},
     "ch": {
+        disabled:1,
         usage:"<create/del><isim>",
         description:"Serverda bir text kanalı oluşturur veya siler. (Manage Channels yetkisi gerekir)",
         process: function(bot,msg,suffix) {
