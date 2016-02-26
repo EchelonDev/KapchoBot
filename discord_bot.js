@@ -393,7 +393,7 @@ var commands = {
 		usage: "<command>",
 		description: 'Executes arbitrary javascript in the bot process. User must have "eval" permission',
 		process: function(bot,msg,suffix) {
-			if(Permissions.checkPermission(msg.sender.id,"dev")){
+			if(checkPermission(msg.sender.id,"dev")){
 				bot.sendMessage(msg.channel, eval(suffix,bot));
 			} else {
 				bot.sendMessage(msg.channel, msg.author + " doesn't have permission to execute eval!");
