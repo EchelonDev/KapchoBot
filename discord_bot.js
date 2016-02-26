@@ -388,6 +388,57 @@ function checkRole(serverid, user, role) {
 //}
 // <Commands> {
 var commands = {
+    "ch": {
+        usage:"<create/del><isim>",
+        description:"Serverda bir text kanalı oluşturur veya siler. (Manage Channels yetkisi gerekir)",
+        process: function(bot,msg,suffix) {
+            try {
+                var args = suffix.split(' ');
+                var cmd = args.shift();
+                var name = args.join(' ');
+              if(cmd == "create" && name != null) {
+                if(bot.memberHasRole(msg.sender,"manageChannels")) {
+                    if(bot.memberHasRole(bot, "manageChannels")) {
+                        bot.createChannel(msg.channel.server,name,"text").then(function(channel) {
+                            bot.sendMessage(msg.channel,"`" + channel + " Oluşturuldu`");
+                        }).catch(function(error){
+                            bot.sendMessage(msg.channel,"kanal oluşturulamadı: `" + error + "`");
+                        });
+                    } else {
+                      bot.sendMessage(msg.channel,"`Lütfen botta 'Manage Channels' yetkisi olduğundan emin olunuz.`");
+                    }
+                } else {
+                  bot.sendMessage(msg.channel,"`Lütfen 'Manage Channels' yetkinizin olduğundan emin olunuz.`");
+                }
+              } else if(cmd == "del" && name != null) {
+                if(bot.memberHasRole(msg.sender,"manageChannels")) {
+                    if(bot.memberHasRole(bot, "manageChannels")) {
+                      if(name.startsWith('<#')){
+                          var channel = bot.channels.get("id",suffix.substr(2,suffix.length-3));
+                          bot.deleteChannel(channel).then(function(channel){
+                              bot.sendMessage(msg.channel,"`" + channel + " silindi`");
+                          }).catch(function(error){
+                              bot.sendMessage(msg.channel,"kanal silinemedi: `" + error + "`");
+                          });
+                      } else {
+                        bot.sendMessage(msg.channel,"`Lütfen kanal ismini mention ediniz.`");
+                      }
+                    } else {
+                      bot.sendMessage(msg.channel,"`Lütfen botta 'Manage Channels' yetkisi olduğundan emin olunuz.`");
+                    }
+                } else {
+                  bot.sendMessage(msg.channel,"`Lütfen 'Manage Channels' yetkinizin olduğundan emin olunuz.`");
+                }
+              } else if(name == null) {
+                bot.sendMessage(msg.channel,"`Lütfen kanal giriniz.`");
+              } else {
+                bot.sendMessage(msg.channel,"`Lütfen komutunuzu kontrol ediniz.`");
+              }
+            } catch (e) {
+              logger.debug("Error !ch at " + msg.channel + " : " + e);
+            }
+        }
+    },
     "kural": {
         description:"Kural listesi.",
         process: function(bot,msg,suffix) {
@@ -473,7 +524,7 @@ var commands = {
                                if(error) {
                                    bot.sendMessage(msg.channel,"`Lütfen botun \"Manage Roles\" rolüne sahib olup olmadığını kontrol ediniz.`");
                                } else {
-                                   bot.sendMessage(msg.channel,"`\"" + roleToChange + "\" rolünün rengi \"" + colour + "\"'a değiştirildi.`");
+                                   bot.sendMessage(msg.channel,"`\"" + roleToChange + "\" rolünün rengi \"" + colour + "\"a değiştirildi.`");
                                }
                             });
                         } else {
@@ -508,7 +559,7 @@ var commands = {
     },
     "restart": {
         hidden:"1",
-        description: "Prints the stats from the instance into the chat.",
+        description: "",
         process: function(bot, msg, suffix) {
             if(checkPermission(msg.sender.id,"dev")) {
               bot.sendMessage(msg.channel,"**brb**");
