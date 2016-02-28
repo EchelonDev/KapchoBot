@@ -597,18 +597,6 @@ var commands = {
           }
       }
     },
-    "restart": {
-        hidden:"1",
-        description: "",
-        process: function(bot, msg, suffix) {
-            if(checkPermission(msg.sender.id,"dev")) {
-              bot.sendMessage(msg.channel,"**brb**");
-              exec("pm2 restart all", puts);
-            } else {
-              bot.sendMessage(msg.channel,"**not permitted**");
-            }
-        }
-    },
     "stats": {
         hidden:"1",
         description: "Prints the stats from the instance into the chat.",
@@ -748,7 +736,15 @@ var commands = {
         hidden:"1",
         process: function(bot,msg,suffix) {
             if(checkPermission(msg.sender.id, "dev")) {
-                bot.sendMessage(msg.channel, "**Bye!**", false, function() {   exec("pm2 stop all", puts); process.exit(0); });
+                bot.sendMessage(msg.channel, "**Bye!**", false, function() { exec("pm2 stop all", puts); process.exit(0); });
+            }
+        }
+    },
+    "restart": {
+        hidden:"1",
+        process: function(bot,msg,suffix) {
+            if(checkPermission(msg.sender.id, "dev")) {
+                bot.sendMessage(msg.channel, "**Brb!**", false, function() { exec("pm2 restart all", puts); process.exit(0); });
             }
         }
     },
@@ -1378,8 +1374,8 @@ bot.on("ready", function () {
 });
 
 bot.on("disconnected", function () {
-	logger.debug("Disconnected!");
-  exec("pm2 restart all", puts);
+    logger.debug("Disconnected!");
+    exec("pm2 restart all", puts);
 });
 
 bot.on("message", function (msg) {
@@ -1457,14 +1453,17 @@ bot.on("message", function (msg) {
 				texttosend += info + "\r\n";
 			}
             bot.sendMessage(msg.author,texttosend);
+            return;
         } else if(cmdTxt === "faq" && suffix === "liste") {
             var keys = [];
             var reply = "```Faq Komutları:\n\n";
             for(var k in faq) reply+= k + "\n";
-            reply = "```";
+            reply += "```";
             bot.sendMessage(msg.channel, reply);
+            return;
         } else if(cmdTxt === "faq" && suffix === "liste detay") {
-            bot.sendMessage(msg.channel, JSON.stringify(faq, null, 2));
+            bot.sendMessage(msg.channel, "```" + JSON.stringify(faq, null, 2) + "```");
+            return;
         } else if(cmd) {
 			try{
 			    if(!cmd.disabled)
