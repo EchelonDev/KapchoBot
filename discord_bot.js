@@ -1567,7 +1567,6 @@ bot.on("message", function (msg) {
 		        }
 		    }
 	    }
-
         if(banned.hasOwnProperty(msg.sender.id)) {
             if(banned[msg.sender.id].permanent) {
                 return;
