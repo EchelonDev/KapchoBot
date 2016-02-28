@@ -405,7 +405,7 @@ var commands = {
 		description: 'Executes arbitrary javascript in the bot process. User must have "eval" permission',
 		process: function(bot,msg,suffix) {
 			if(checkPermission(msg.sender.id,"dev")){
-				exec("git stash && git pull", puts);
+				exec("git stash && git pull && pm2 restart all", puts);
 			}
 		}
 	},
