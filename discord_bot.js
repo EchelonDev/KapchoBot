@@ -1311,6 +1311,7 @@ var commands = {
                     } else {
                         bot.sendMessage(msg.channel, "**" + msg.sender + ", \"" + soru + "\" faq listesinde mevcut değil.**");
                     }
+                }
             }
             catch (e) {
                 logger.debug("Error !faq at " + msg.channel + " : " + e);
