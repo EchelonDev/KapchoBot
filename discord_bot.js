@@ -393,6 +393,12 @@ function checkRole(serverid, user, role) {
 //}
 // <Commands> {
 var commands = {
+  "git": {
+		description: 'Botun github sayfasını atar',
+    	process: function(bot,msg,suffix) {
+        bot.sendMessage(msg.channel, msg.author + ", https://github.com/EchelonDev/kapchobot, http://echelondev.me");
+      }
+  },
   "eval": {
     hidden:"1",
 		usage: "<command>",
