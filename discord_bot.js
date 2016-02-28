@@ -1470,7 +1470,7 @@ bot.on("message", function (msg) {
             var keys = [];
             var reply = "```Faq Komutları:\n\n";
             for(var k in faq) reply+= k + "\n";
-            reply += "```";
+            reply -= "```";
             bot.sendMessage(msg.channel, reply);
             return;
         } else if(cmdTxt === "faq" && suffix === "liste detay") {
