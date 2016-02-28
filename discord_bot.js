@@ -529,6 +529,7 @@ var commands = {
                     var args = suffix.split(' ');
                     var roleToChange = args.shift();
                     var colour = args.shift();
+                    roleToChange = roleToChange.replace("_", " ");
                     if(colour.match(/^(#)?[A-Fa-f0-9]+$/)) {
                         if(msg.channel.server.roles.get("name",roleToChange) != null){
                             var role = msg.channel.server.roles.get("name",roleToChange);
