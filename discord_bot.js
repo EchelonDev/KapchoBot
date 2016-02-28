@@ -1275,7 +1275,7 @@ var commands = {
 			            var cevap = args.join(' ');
                         faq[soru.toLowerCase()] = cevap;
                         updateFaq();
-                        bot.sendMessage(msg.sender, "**Faq listesine \"" + soru + "\" eklendi.**");
+                        bot.sendMessage(msg.channel, "**Faq listesine \"" + soru + "\" eklendi.**");
                     } else {
                     bot.sendMessage(msg.channel,"**Bu komutu kullanmak için gerekli yetkiye sahip değilsiniz.**");
                     }
