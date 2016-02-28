@@ -985,7 +985,7 @@ var commands = {
     			    var user = args.shift();
     			    var mod = args.shift();
                 } else if(osuNickNames.hasOwnProperty(msg.sender.id)){
-                    var user = msg.sender.id;
+                    var user = osuNickNames[msg.sender.id];
                 }
                 if(user && user.length >= 3 && strcon(user) && (mod == null || mod == "")){
                     req = "http://lemmmy.pw/osusig/sig.php?colour=hex" + Math.floor(Math.random()*16777215).toString(16) + "&uname="+ encodeURIComponent(user) +"&pp=2&countryrank&flagshadow&darktriangles&avatarrounding=4&rankedscore&xpbar&xpbarhex";
@@ -1014,7 +1014,8 @@ var commands = {
         process: function(bot,msg,suffix){
             try {
                 osuNickNames[msg.sender.id] = suffix;
-                bot.sendMessage(msg.channel,"**" + msg.sender, ", osu! kullanıcı adınız \"" + suffix + "\" olarak kaydedilmiştir.**");
+                updateOsuNickNames();
+                bot.sendMessage(msg.channel,"**" + msg.sender + ", osu! kullanıcı adınız \"" + suffix + "\" olarak kaydedilmiştir.**");
             } catch(e) {
                  logger.debug("Error !osu at " + msg.channel + " : " + e);
             }
