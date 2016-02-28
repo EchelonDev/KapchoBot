@@ -20,7 +20,8 @@ var afkList         = {},
     selfMention     = false,
     WhoList         = {},
     prefix          = '!',
-    osuNickNames    = {};
+    osuNickNames    = {},
+    faq             = {};
 //}
 // <Requires> {
 try {
@@ -86,6 +87,9 @@ try {
 try {
     osuNickNames = require(jsonFolder + "osuNickNames.json");
 } catch(e) {}
+try {
+    faq = require(jsonFolder + "faq.json");
+} catch(e) {}
 //}
 // <Required Variables> {
 var account         = AuthDetails.ttv;
@@ -108,6 +112,7 @@ function updateAlias(){updateJSON("alias.json",alias);}
 function updateBanned(){updateJSON("banned.json",banned);}
 function updateAuth(){updateJSON("auth.json",AuthDetails);}
 function updateOsuNickNames(){updateJSON("osuNickNames.json",osuNickNames);}
+function updateFaq(){updateJSON("faq.json",faq);}
 //}
 // <setInterval & setTimeout> {
 setInterval(function() {
@@ -1260,7 +1265,50 @@ var commands = {
                      bot.sendMessage(msg.channel, "**Hayır**");
             }
         }
-    }
+    },
+    "faq": {
+        usage:":<soru>",
+        description:"Sıkça sorulan sorular.",
+        process: function(bot,msg,suffix) {
+            try {
+                if(suffix.startsWith("ekle ")) {
+                    if(checkPermission(msg.sender.id, "admin")) {
+                        var args = suffix.split(' ');
+                        args.shift();
+			            var soru = args.shift();
+			            var cevap = args.join(' ');
+                        faq[soru.toLowerCase()] = cevap;
+                        updateFaq();
+                        bot.sendMessage(msg.sender, "**Faq listesine \"" + soru + "\" eklendi.**");
+                    } else {
+                    bot.sendMessage(msg.channel,"**Bu komutu kullanmak için gerekli yetkiye sahip değilsiniz.**");
+                    }
+                } else if(suffix.startsWith("sil ")) {
+                    if(checkPermission(msg.sender.id, "admin"))
+                        var args = suffix.split(' ');
+                        args.shift();
+			            var soru = args.shift();
+                        if(faq.hasOwnProperty(soru)) {
+                            delete faq[soru.toLowerCase()];
+                            updateFaq();
+                            bot.sendMessage(msg.sender, "**Faq listesinden \"" + soru + "\" silindi.**");
+                        } else {
+                            bot.sendMessage(msg.sender, "**\"" + soru + "\" faq listesinde mevcut değil.**");
+                        }
+                    } else {
+                    bot.sendMessage(msg.channel,"**Bu komutu kullanmak için gerekli yetkiye sahip değilsiniz.**");
+                    }
+                } else if(suffix) {
+                    bot.sendMessage(msg.channel, faq[suffix]);
+                } else {
+                    bot.sendMessage(msg.channel, "**" + msg.sender + ", \"" + soru + "\" faq listesinde mevcut değil.**");
+                }
+            }
+            catch (e) {
+                logger.debug("Error !faq at " + msg.channel + " : " + e);
+            }
+        }
+    },
 };
 
 var caps = {
@@ -1317,82 +1365,6 @@ var caps = {
     },
     "b8": {
         process: function() { return ("./caps/bait/ " + (Math.floor(Math.random() * 139) + 1).toString() + ".png"); }
-    }
-};
-
-var faq = {
-    "satır": {
-        process: function(bot,msg,suffix) {
-            try {
-                if(suffix) {
-                    bot.sendMessage(msg.channel, suffix + "**, Lütfen yazacaklarınızı tek bir satırda yazmaya çalışın.**");
-                } else {
-                    bot.sendMessage(msg.channel,"**Lütfen yazacaklarınızı tek bir satırda yazmaya çalışının.**");
-                }
-            } catch(e) {
-                logger.debug("Error at !faq:satır : " + e);
-            }
-        }
-    },
-    "caps": {
-        process: function(bot,msg,suffix) {
-            try {
-                if(true) {
-                    if(suffix) {
-                        bot.sendMessage(msg.channel, suffix + "**, lütfen büyük harf kullanımına dikkat ediniz, tüm cümleyi büyük yazmanız bir şeyi değiştirmiyor.**");
-                    } else {
-                        bot.sendMessage(msg.channel,"**Lütfen büyük harf kullanımına dikkat ediniz, tüm cümleyi büyük yazmanız bir şeyi değiştirmiyor.**");
-                    }
-                }
-            } catch(e) {
-                logger.debug("Error at !faq:caps : " + e);
-            }
-        }
-    },
-    "spam": {
-        process: function(bot,msg,suffix) {
-            try {
-                if(true) {
-                    if(suffix) {
-                        bot.sendMessage(msg.channel, suffix + "**, lütfen spam yapmamaya özen gösteriniz.**");
-                    } else {
-                        bot.sendMessage(msg.channel,"**Lütfen spam yapmamaya özen gösteriniz.**");
-                    }
-                }
-            } catch(e) {
-                logger.debug("Error at !faq:spam : " + e);
-            }
-        }
-    },
-    "küfür": {
-        process: function(bot,msg,suffix) {
-            try {
-                if(true) {
-                    if(suffix) {
-                        bot.sendMessage(msg.channel, suffix + "**, lütfen genel chatlerde küfür etmemeye özen gösteriniz.**");
-                    } else {
-                        bot.sendMessage(msg.channel,"**Lütfen genel chatlerde küfür etmemeye özen gösteriniz.**");
-                    }
-                }
-            } catch(e) {
-                logger.debug("Error at !faq:küfür : " + e);
-            }
-        }
-    },
-    "lan": {
-        process: function(bot,msg,suffix) {
-            try {
-                if(true) {
-                    if(suffix) {
-                        bot.sendMessage(msg.channel, suffix + "**, lütfen genel chatlerde \"Lan\" kelimesini kullanmamaya özen gösteriniz.**");
-                    } else {
-                        bot.sendMessage(msg.channel,"**Lütfen genel chatlerde \"Lan\" kelimesini kullanmamaya özen gösteriniz.**");
-                    }
-                }
-            } catch(e) {
-                logger.debug("Error at !faq:lan : " + e);
-            }
-        }
     }
 };
 
@@ -1485,29 +1457,15 @@ bot.on("message", function (msg) {
 				texttosend += info + "\r\n";
 			}
             bot.sendMessage(msg.author,texttosend);
-        }
-        else if(cmdTxt.indexOf("faq:") == 0 || cmdTxt.indexOf("f:") == 0) {
-            var komut = cmdTxt.substring(cmdTxt.indexOf(':')+1, cmdTxt.length);
-            var faqp = faq[komut];
-            if(faqp) {
-                try {
-                    if(suffix.startsWith("<@")) {
-                        suffix = suffix.substring(suffix.indexOf("<@"), suffix.indexOf(">")+1);
-                    }
-                    faqp.process(bot,msg,suffix);
-                    return;
-                } catch(e) {
-                    if(Config.debug){
-	    		    		bot.sendMessage(msg.channel, "komut " + cmdTxt + " başarısız :(\n" + e.stack);
-	    		    	}
-	    		    }
-	    	} else {
-	    		if(Config.respondToInvalid){
-	    			bot.sendMessage(msg.channel, "Bilinmeyen komut " + cmdTxt);
-	    		}
-            }
-        }
-		else if(cmd) {
+        } else if(cmdTxt === "faq" && suffix === "liste") {
+            var keys = [];
+            var reply = "```Faq Komutları:\n\n";
+            for(var k in faq) reply+= k + "\n";
+            reply = "```";
+            bot.sendMessage(msg.channel, reply);
+        } else if(cmdTxt === "faq" && suffix === "liste detay") {
+            bot.sendMessage(msg.channel, JSON.stringify(faq, null, 2));
+        } else if(cmd) {
 			try{
 			    if(!cmd.disabled)
 				    cmd.process(bot,msg,suffix);
