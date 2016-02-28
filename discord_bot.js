@@ -19,7 +19,8 @@ var afkList         = {},
     Rules           = {},
     selfMention     = false,
     WhoList         = {},
-    prefix          = '!';
+    prefix          = '!',
+    osuNickNames    = {};
 //}
 // <Requires> {
 try {
@@ -82,6 +83,9 @@ try {
 try {
     developers = require(jsonFolder + "developers.json");
 } catch(e) {}
+try {
+    osuNickNames = require(jsonFolder + "osuNickNames.json");
+} catch(e) {}
 //}
 // <Required Variables> {
 var account         = AuthDetails.ttv;
@@ -103,6 +107,7 @@ function updateMessagebox(){updateJSON("messagebox.json",messagebox);}
 function updateAlias(){updateJSON("alias.json",alias);}
 function updateBanned(){updateJSON("banned.json",banned);}
 function updateAuth(){updateJSON("auth.json",AuthDetails);}
+function updateOsuNickNames(){updateJSON("osuNickNames.json",osuNickNames);}
 //}
 // <setInterval & setTimeout> {
 setInterval(function() {
@@ -910,10 +915,14 @@ var commands = {
         description:"Kişinin Osu statlarını getirir.)",
         process: function(bot,msg,suffix){
             try {
-                var req = "";
-                var args = suffix.split(' ');
-			    var user = args.shift();
-			    var mod = args.shift();
+                if(suffix) {
+                    var req = "";
+                    var args = suffix.split(' ');
+    			    var user = args.shift();
+    			    var mod = args.shift();
+                } else if(osuNickNames.hasOwnProperty(msg.sender.id)){
+                    var user = msg.sender.id;
+                }
                 if(user && user.length >= 3 && strcon(user) && (mod == null || mod == "")){
                     req = "http://lemmmy.pw/osusig/sig.php?colour=hex" + Math.floor(Math.random()*16777215).toString(16) + "&uname="+ encodeURIComponent(user) +"&pp=2&countryrank&flagshadow&darktriangles&avatarrounding=4&rankedscore&xpbar&xpbarhex";
                 } else if(user && user.length >= 3 && strcon(user) && mod == "taiko") {
@@ -931,6 +940,17 @@ var commands = {
                 });
             }
             catch(e) {
+                 logger.debug("Error !osu at " + msg.channel + " : " + e);
+            }
+        }
+    },
+    "setosu": {
+        usage:"<osu kullanıcı adı>",
+        description:"Kişinin osu kullanıcı adını kaydeder.",
+        process: function(bot,msg,suffix){
+            try {
+                osuNickNames[msg.sender.id] = suffix;
+            } catch(e) {
                  logger.debug("Error !osu at " + msg.channel + " : " + e);
             }
         }
