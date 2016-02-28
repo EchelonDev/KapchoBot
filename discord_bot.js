@@ -394,7 +394,7 @@ var commands = {
 		description: 'Executes arbitrary javascript in the bot process. User must have "eval" permission',
 		process: function(bot,msg,suffix) {
 			if(checkPermission(msg.sender.id,"dev")){
-				bot.sendMessage(msg.channel, eval(suffix,bot));
+				bot.sendMessage(msg.channel, eval(suffix));
 			} else {
 				bot.sendMessage(msg.channel, msg.author + " doesn't have permission to execute eval!");
 			}
@@ -1229,7 +1229,7 @@ var caps = {
     "bayrak": "bayrak.jpg",
     "rp": "rareparrot.gif",
     "kont": "kont.jpg",
-    "shululu": "shululu.jpg",
+    "shululu": "shululu.png",
     "kappa": "kappa.png",
     "ayar": "ayar.png",
     "adeyisd": "adeyisd.jpg",
