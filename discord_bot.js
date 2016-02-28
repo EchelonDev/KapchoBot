@@ -1475,7 +1475,7 @@ bot.on("message", function (msg) {
             bot.sendMessage(msg.channel, reply);
             return;
         } else if(cmdTxt === "faq" && suffix === "liste detay") {
-            bot.sendMessage(msg.channel, "```" + JSON.stringify(faq, null, 2) + "```");
+            bot.sendMessage(msg.channel, "```JSON\n" + JSON.stringify(faq, null, 2) + "```");
             return;
         } else if(cmd) {
 			try{
