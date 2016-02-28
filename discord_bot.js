@@ -979,13 +979,16 @@ var commands = {
         description:"Kişinin Osu statlarını getirir.)",
         process: function(bot,msg,suffix){
             try {
-                if(suffix) {
-                    var req = "";
+                var req = "";
+                if(suffix && suffix.length > 3 && suffix != "takio" && suffix != "ctb" && suffix != "mania") {
                     var args = suffix.split(' ');
     			    var user = args.shift();
     			    var mod = args.shift();
-                } else if(osuNickNames.hasOwnProperty(msg.sender.id)){
+                } else if(osuNickNames.hasOwnProperty(msg.sender.id)) {
                     var user = osuNickNames[msg.sender.id];
+                    if(suffix) {
+                        var mod = suffix;
+                    }
                 }
                 if(user && user.length >= 3 && strcon(user) && (mod == null || mod == "")){
                     req = "http://lemmmy.pw/osusig/sig.php?colour=hex" + Math.floor(Math.random()*16777215).toString(16) + "&uname="+ encodeURIComponent(user) +"&pp=2&countryrank&flagshadow&darktriangles&avatarrounding=4&rankedscore&xpbar&xpbarhex";
