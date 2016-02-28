@@ -782,7 +782,7 @@ var commands = {
 
                   if(m > 60) {
                     if(!h) h = 0;
-                    h += m / 60;
+                    h += parseInt(m / 60, 10);
                     m %= 60;
                   }
 
