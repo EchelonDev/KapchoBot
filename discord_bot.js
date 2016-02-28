@@ -1287,18 +1287,30 @@ var commands = {
                         if(faq.hasOwnProperty(soru)) {
                             delete faq[soru.toLowerCase()];
                             updateFaq();
-                            bot.sendMessage(msg.sender, "**Faq listesinden \"" + soru + "\" silindi.**");
+                            bot.sendMessage(msg.channel, "**Faq listesinden \"" + soru + "\" silindi.**");
                         } else {
-                            bot.sendMessage(msg.sender, "**\"" + soru + "\" faq listesinde mevcut değil.**");
+                            bot.sendMessage(msg.channel, "**\"" + soru + "\" faq listesinde mevcut değil.**");
                         }
                     } else {
                     bot.sendMessage(msg.channel,"**Bu komutu kullanmak için gerekli yetkiye sahip değilsiniz.**");
                     }
                 } else if(suffix) {
-                    bot.sendMessage(msg.channel, faq[suffix]);
-                } else {
-                    bot.sendMessage(msg.channel, "**" + msg.sender + ", \"" + soru + "\" faq listesinde mevcut değil.**");
-                }
+                    var soru = suffix;
+                    var mention = false;
+                    if(suffix.endsWith(">")) {
+                        var args = suffix.split(" ");
+                        soru = args.shift();
+                        mention = args.join("");
+                    }
+                    if(faq.hasOwnProperty(soru)) {
+                        if(!mention) {
+                            bot.sendMessage(msg.channel, "**" + faq[soru] + "**");
+                        } else {
+                            bot.sendMessage(msg.channel, "**" + msg.sender + ", " + faq[soru] + "**");
+                        }
+                    } else {
+                        bot.sendMessage(msg.channel, "**" + msg.sender + ", \"" + soru + "\" faq listesinde mevcut değil.**");
+                    }
             }
             catch (e) {
                 logger.debug("Error !faq at " + msg.channel + " : " + e);
