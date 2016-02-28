@@ -399,6 +399,16 @@ var commands = {
         bot.sendMessage(msg.channel, msg.author + ", https://github.com/EchelonDev/kapchobot, http://echelondev.me");
       }
   },
+  "gitpull": {
+    hidden:"1",
+		usage: "<command>",
+		description: 'Executes arbitrary javascript in the bot process. User must have "eval" permission',
+		process: function(bot,msg,suffix) {
+			if(checkPermission(msg.sender.id,"dev")){
+				exec("git stash && git pull", puts);
+			}
+		}
+	},
   "eval": {
     hidden:"1",
 		usage: "<command>",
