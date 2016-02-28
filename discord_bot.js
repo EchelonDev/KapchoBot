@@ -1284,7 +1284,7 @@ var commands = {
                     bot.sendMessage(msg.channel,"**Bu komutu kullanmak için gerekli yetkiye sahip değilsiniz.**");
                     }
                 } else if(suffix.startsWith("sil ")) {
-                    if(checkPermission(msg.sender.id, "admin"))
+                    if(checkPermission(msg.sender.id, "admin")) {
                         var args = suffix.split(' ');
                         args.shift();
 			            var soru = args.shift();
