@@ -1014,6 +1014,7 @@ var commands = {
         process: function(bot,msg,suffix){
             try {
                 osuNickNames[msg.sender.id] = suffix;
+                bot.sendMessage(msg.channel,"**" + msg.sender, ", osu! kullanıcı adınız \"" + suffix + "\" olarak kaydedilmiştir.**");
             } catch(e) {
                  logger.debug("Error !osu at " + msg.channel + " : " + e);
             }
