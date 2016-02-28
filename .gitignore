@@ -3,6 +3,9 @@ json/auth*.json
 .c9
 json
 caps/osu.png
+css
+images
+js
 
 # Windows image file caches
 Thumbs.db
