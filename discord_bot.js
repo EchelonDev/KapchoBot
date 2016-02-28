@@ -726,7 +726,7 @@ var commands = {
         hidden:"1",
         process: function(bot,msg,suffix) {
             if(checkPermission(msg.sender.id, "dev")) {
-                bot.sendMessage(msg.channel, "**Bye!**", false, function() { process.exit(0); });
+                bot.sendMessage(msg.channel, "**Bye!**", false, function() {   exec("pm2 stop all", puts); process.exit(0); });
             }
         }
     },
@@ -974,9 +974,9 @@ var commands = {
             }
         }
     },
-    "osu": {
+    "osusig": {
         usage:"<isim>",
-        description:"Kişinin Osu statlarını getirir.)",
+        description:"Kişinin Osu imzasını getirir.",
         process: function(bot,msg,suffix){
             try {
                 var req = "";
