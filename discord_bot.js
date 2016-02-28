@@ -393,6 +393,22 @@ function checkRole(serverid, user, role) {
 //}
 // <Commands> {
 var commands = {
+  "git": {
+		description: 'Botun github sayfasını atar',
+    	process: function(bot,msg,suffix) {
+        bot.sendMessage(msg.channel, msg.author + ", https://github.com/EchelonDev/kapchobot, http://echelondev.me");
+      }
+  },
+  "gitpull": {
+    hidden:"1",
+		usage: "<command>",
+		description: 'Executes arbitrary javascript in the bot process. User must have "eval" permission',
+		process: function(bot,msg,suffix) {
+			if(checkPermission(msg.sender.id,"dev")){
+				exec("git stash && git pull && pm2 restart all", puts);
+			}
+		}
+	},
   "eval": {
     hidden:"1",
 		usage: "<command>",
@@ -727,7 +743,7 @@ var commands = {
         hidden:"1",
         process: function(bot,msg,suffix) {
             if(checkPermission(msg.sender.id, "dev")) {
-                bot.sendMessage(msg.channel, "**Bye!**", false, function() { process.exit(0); });
+                bot.sendMessage(msg.channel, "**Bye!**", false, function() {   exec("pm2 stop all", puts); process.exit(0); });
             }
         }
     },
@@ -975,9 +991,9 @@ var commands = {
             }
         }
     },
-    "osu": {
+    "osusig": {
         usage:"<isim>",
-        description:"Kişinin Osu statlarını getirir.)",
+        description:"Kişinin Osu imzasını getirir.",
         process: function(bot,msg,suffix){
             try {
                 var req = "";
