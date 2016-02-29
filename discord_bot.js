@@ -1025,7 +1025,7 @@ var commands = {
                 if(suffix && !suffix.startsWith("<") && suffix.length > 3 && suffix != "takio" && suffix != "ctb" && suffix != "mania") {
                     var args = suffix.split(' ');
     			    var user = args.shift();
-    			    var mod = args.shift(
+    			    var mod = args.shift();
                 } else if(suffix.startsWith("<")) {
                     var args = suffix.split(' ');
     			    var user = args.shift();
