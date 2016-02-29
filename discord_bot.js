@@ -318,7 +318,7 @@ function getUserDetail(username,chan,detail) {
     }
     var rp = "**" + response.username + "** kullanıcısının osu! profili hakkında bilgiler\n" +
 
-    "\n**Performans: **" + Number(response.pp_raw).toLocaleString() + " (#" + Number(response.pp_rank).toLocaleString() + ")" +
+    "\n**Performans: **" + parseInt(response.pp_raw, 10).toLocaleString() + "pp (#" + Number(response.pp_rank).toLocaleString() + ")" +
     "\n**Ülke: **" + alpha2full(response.country) + " (#" + Number(response.pp_country_rank).toLocaleString() + ")" +
     "\n**Seviye: **" + parseInt(response.level, 10) +
     "\n**Sıralama puanı: **" + Number(response.ranked_score).toLocaleString() +
@@ -1022,7 +1022,6 @@ var commands = {
         process: function(bot,msg,suffix){
             try {
                 var req = "";
-                console.log(suffix);
                 if(suffix && !suffix.startsWith("<") && suffix.length > 3 && suffix != "takio" && suffix != "ctb" && suffix != "mania") {
                     var args = suffix.split(' ');
     			    var user = args.shift();
