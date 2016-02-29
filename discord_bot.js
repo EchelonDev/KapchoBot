@@ -318,9 +318,9 @@ function getUserDetails(username,chan) {
         }
         var rp = "**" + response.username + "** kullanıcısının osu! profili hakkında bilgiler\n" +
 
-        "\n**Performans: **" + parseInt(response.pp_raw, 10).toLocaleString() + "pp (#" + Number(response.pp_rank).toLocaleString() + ")" +
+        "\n**Performans: **" + parseFloat(response.pp_raw).toFixed(2) + "pp (#" + Number(response.pp_rank).toLocaleString() + ")" +
         "\n**Ülke: **" + alpha2full(response.country) + " (#" + Number(response.pp_country_rank).toLocaleString() + ")" +
-        "\n**Seviye: **" + parseInt(response.level, 10) +
+        "\n**Seviye: **" + parseFloat(response.level).toFixed(2) +
         "\n**Sıralama puanı: **" + Number(response.ranked_score).toLocaleString() + " puan" +
         "\n**Toplam puan: **" + Number(response.total_score).toLocaleString() + " puan" +
         "\n**İsabetlilik: **" + "%" + parseFloat(response.accuracy).toFixed(2) +
@@ -335,8 +335,7 @@ function getUserDetails(username,chan) {
             if (err) {
                 return console.log (err);
             }
-            console.log(response[0])
-            rp += "\n**En iyi skor:** " + Number(response[0].score).toLocaleString() + " puan / " +  Number(response[0].maxcombo).toLocaleString() + " kombo (" +  Number(parseInt(response[0].pp, 10)).toLocaleString() + "pp)";
+            rp += "\n**En iyi skor:** " + Number(response[0].score).toLocaleString() + " puan / " +  Number(response[0].maxcombo).toLocaleString() + " kombo (" +  parseFloat(response[0].pp).toFixed(2) + "pp)";
             bot.sendMessage(chan,rp);
         });
     });
