@@ -316,18 +316,18 @@ function getUserDetail(username,chan) {
         bot.sendMessage(chan,"**Kullanıcı bulunamadı !**");
         return false;
     }
-    var rp = "** " + response.username + "**" +
-    "\n**Performans: **" + response.pp_raw + "(#" + response.pp_rank + ")" +
-    "\n**Ülke: **" + alpha2full(response.country) + "(#" + response.pp_country_rank + ")" +
-    "\n**Sıralama puanı: **" + response.ranked_score +
-    "\n**İsabetlilik: **" + response.accuracy +
-    "\n**Oynama sayısı: **" + response.playcount +
-    "\n**Toplam puan: **" + response.total_score +
-    "\n**Seviye: **" + response.level +
-    "\n**Toplam hit: **" + (parseInt(response.count300, 10) + parseInt(response.count100, 10) + parseInt(response.count50, 10)) +
-    "\n**SS: **" + response.count_rank_ss +
-    "\n**S: **" + response.count_rank_s +
-    "\n**A: **" + response.count_rank_a +
+    var rp = "**" + response.username + "** hakkında bilgiler\n" +
+    "\n**Performans: **" + response.pp_raw + " (#" + response.pp_rank.toLocaleString() + ")" +
+    "\n**Ülke: **" + alpha2full(response.country) + " (#" + response.pp_country_rank.toLocaleString() + ")" +
+    "\n**Sıralama puanı: **" + response.ranked_score.toLocaleString() +
+    "\n**Toplam puan: **" + response.total_score.toLocaleString() +
+    "\n**İsabetlilik: **" + response.accuracy.toFixed(2) +
+    "\n**Oynama sayısı: **" + response.playcount.toLocaleString() +
+    "\n**Seviye: **" + parseInt(response.level, 10) +
+    "\n**Toplam hit: **" + (parseInt(response.count300, 10) + parseInt(response.count100, 10) + parseInt(response.count50, 10)).toLocaleString() +
+    "\n**SS: **" + response.count_rank_ss.toLocaleString() +
+    "\n**S: **" + response.count_rank_s.toLocaleString() +
+    "\n**A: **" + response.count_rank_a.toLocaleString();
     return bot.sendMessage(chan,rp);
     });
 }
