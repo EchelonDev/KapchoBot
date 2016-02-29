@@ -1145,6 +1145,17 @@ var commands = {
             }
         }
     },
+    "marco": {
+        hidden:"1",
+        description: "polo! cevabını verir, bot açıkmı kontrol etmek için birebir.",
+        process: function(bot, msg, suffix) {
+            try {
+                bot.sendMessage(msg.channel, msg.sender+" polo!");
+            } catch(e) {
+                logger.debug("Error !marco at " + msg.channel + " : " + e);
+            }
+        }
+    },
     "bye": {
         description: "bye bye",
         process: function(bot, msg, suffix) {
