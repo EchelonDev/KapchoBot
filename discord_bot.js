@@ -1400,6 +1400,76 @@ var commands = {
             }
         }
     },
+    "mesajsil": {
+	    hidden: "1",
+        usage:"<sayı> <@kişi>",
+	    description:"Chate yazılan mesajları siler.",
+	    process: function(bot,msg,suffix) {
+            try {
+                if(checkPermission(msg.sender.id, "dev")) {
+                    if(suffix) {
+                        var args = suffix.split(" ");
+                        var amount = args.shift();
+                        var all = false;
+                        var offset = 2;
+                        var error = false;
+                        if(amount.startsWith("<")) {
+                            var userid = amount.substring(2, amount.length-1);
+                        } else if(args.length > 0) {
+                            var userid = args.shift();
+                            if(userid.startsWith("<")) {
+                                userid = userid.replace("<@", "");
+                                userid = userid.replace(">", "");
+                            } else {
+                                bot.sendMessage(msg.channel, "**Lütfen geçerli bir kişi giriniz.** Kullanım : \"!mesajsil <sayı> <kişi>\" ya da \"!mesajsil <kişi>\"");
+                                error = true;
+                            }
+                        } else {
+                            var userid = false;
+                        }
+
+                        if(amount == "hepsi") {
+                            all = true;
+                            if(!userid) {
+                                offset = 1;
+                            } else if(msg.sender.id == userid) {
+                                offset = 1;
+                            }
+                        } else if(!numcon(amount)){
+                            bot.sendMessage(msg.channel, "**Lütfen geçerli bir sayı giriniz.** Kullanım : \"!mesajsil <sayı> <kişi>\" ya da \"!mesajsil <kişi>\"");
+                            error = true;
+                        }
+                        if(!error) {
+        	                var msjlar = msg.channel.messages;
+                            var count = 0;
+        	                for(var i = msjlar.length - offset; i > -1; i--) {
+                                if(count >= amount) {
+                                    break;
+                                }
+                                if(userid) {
+                                    if(msjlar[i].sender.id == userid) {
+            	                        bot.deleteMessage(msjlar[i]);
+                                        if(!all) {
+                                            count++;
+                                        }
+            	                    }
+                                } else {
+                                    bot.deleteMessage(msjlar[i]);
+                                    if(!all) {
+                                        count++;
+                                    }
+                                }
+        	                }
+                        }
+                    } else {
+                        bot.sendMessage(msg.channel, "**\"!mesajsil\" komutunun kullanımında bir hata olmuşa benziyor, lütfen girdiğiniz komutu tekrar gözden geçiriniz.** Kullanım : \"!mesajsil <sayı> <kişi>\" ya da \"!mesajsil <kişi>\"");
+                    }
+	            }
+	        } catch(e) {
+	            logger.debug("Error !mesajsil at " + msg.channel + " : " + e);
+	        }
+	    }
+	}
 };
 
 var caps = {
