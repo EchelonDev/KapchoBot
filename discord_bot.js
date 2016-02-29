@@ -1742,7 +1742,8 @@ bot.on("presence", function(oldUser, newUser) {
 	try{
 	    if(user.status === 'online'){
             if(osuTrChat) {
-        	       bot.sendMessage(osuTrChat, user.name + " giriş yaptı!");
+                logger.debug(user.name + " logged in!");
+                bot.sendMessage(osuTrChat, user.name + " giriş yaptı!");
             }
 	    	if(messagebox.hasOwnProperty(user.id)){
 	    		logger.debug("found message for " + user.id);
@@ -1754,6 +1755,7 @@ bot.on("presence", function(oldUser, newUser) {
 	    	}
 	    }
 	    if(user.status == 'offline') {
+            logger.debug(user.name + " logged out!");
 	    	if(afkList.hasOwnProperty(user.id)) {
 	    		var channel = bot.channels.get("id", afkList[user.id].channel);
 	    		bot.sendMessage(channel,"**"+ user + " AFK iken Discord'dan çıktı.**");
