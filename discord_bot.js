@@ -1389,7 +1389,7 @@ var commands = {
                         if(!mention) {
                             bot.sendMessage(msg.channel, "**" + faq[soru] + "**");
                         } else {
-                            bot.sendMessage(msg.channel, "**" + msg.sender + ", " + faq[soru] + "**");
+                            bot.sendMessage(msg.channel, "**" + mention + ", " + faq[soru] + "**");
                         }
                     } else {
                         bot.sendMessage(msg.channel, "**" + msg.sender + ", \"" + soru + "\" faq listesinde mevcut değil.**");
