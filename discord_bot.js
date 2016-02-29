@@ -317,17 +317,17 @@ function getUserDetail(username,chan) {
         return false;
     }
     var rp = "**" + response.username + "** hakkında bilgiler\n" +
-    "\n**Performans: **" + response.pp_raw + " (#" + response.pp_rank.toLocaleString() + ")" +
-    "\n**Ülke: **" + alpha2full(response.country) + " (#" + response.pp_country_rank.toLocaleString() + ")" +
-    "\n**Sıralama puanı: **" + response.ranked_score.toLocaleString() +
-    "\n**Toplam puan: **" + response.total_score.toLocaleString() +
-    "\n**İsabetlilik: **" + response.accuracy.toFixed(2) +
-    "\n**Oynama sayısı: **" + response.playcount.toLocaleString() +
+    "\n**Performans: **" + Number(response.pp_raw).toLocaleString() + " (#" + Number(response.pp_rank).toLocaleString() + ")" +
+    "\n**Ülke: **" + alpha2full(response.country) + " (#" + Number(response.pp_country_rank).toLocaleString() + ")" +
+    "\n**Sıralama puanı: **" + Number(response.ranked_score).toLocaleString() +
+    "\n**Toplam puan: **" + Number(response.total_score).toLocaleString() +
+    "\n**İsabetlilik: **" + parseFloat(response.accuracy).toFixed(2) +
+    "\n**Oynama sayısı: **" + Number(response.playcount).toLocaleString() +
     "\n**Seviye: **" + parseInt(response.level, 10) +
     "\n**Toplam hit: **" + (parseInt(response.count300, 10) + parseInt(response.count100, 10) + parseInt(response.count50, 10)).toLocaleString() +
-    "\n**SS: **" + response.count_rank_ss.toLocaleString() +
-    "\n**S: **" + response.count_rank_s.toLocaleString() +
-    "\n**A: **" + response.count_rank_a.toLocaleString();
+    "\n**SS: **" + Number(response.count_rank_ss).toLocaleString() +
+    "\n**S: **" + Number(response.count_rank_s).toLocaleString() +
+    "\n**A: **" + Number(response.count_rank_a).toLocaleString();
     return bot.sendMessage(chan,rp);
     });
 }
@@ -1445,7 +1445,7 @@ bot.on("ready", function () {
 
 bot.on("disconnected", function () {
     logger.debug("Disconnected!");
-    exec("pm2 restart all", puts);
+    //exec("pm2 restart all", puts);
 });
 
 bot.on("message", function (msg) {
