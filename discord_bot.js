@@ -741,12 +741,12 @@ var commands = {
                     if(cmd == "ekle") {
                         alias[alis] = org;
                         updateAlias();
-                        bot.sendMessage(msg.sender, "**\"" + alis + " : " + org + "\" eklendi.**");
+                        bot.sendMessage(msg.channel, "**\"" + alis + " : " + org + "\" aliası eklendi.**");
                     } else if(cmd == "sil") {
                         if(alias.hasOwnProperty(alis)) {
                             delete alias[alis];
                             updateAlias();
-                            bot.sendMessage(msg.sender, "**\"" + alis + "\" silindi.**");
+                            bot.sendMessage(msg.channel, "**\"" + alis + "\" aliası silindi.**");
                         }
                     }
                 }
@@ -1025,7 +1025,7 @@ var commands = {
                 if(suffix && !suffix.startsWith("<") && suffix.length > 3 && suffix != "takio" && suffix != "ctb" && suffix != "mania") {
                     var args = suffix.split(' ');
     			    var user = args.shift();
-    			    var mod = args.shift();
+    			    var mod = args.shift(
                 } else if(suffix.startsWith("<")) {
                     var args = suffix.split(' ');
     			    var user = args.shift();
