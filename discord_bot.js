@@ -310,26 +310,35 @@ function getBeatmapDetail(beatmap,chan,mode) {
     }
 }
 
-function getUserDetail(username,chan,detail) {
+function getUserDetails(username,chan) {
     osuApi.getUser(osuApi.user.byUsername(username), function(err, response) {
-    if (err) {
-        bot.sendMessage(chan,"**Kullanıcı bulunamadı !**");
-        return false;
-    }
-    var rp = "**" + response.username + "** kullanıcısının osu! profili hakkında bilgiler\n" +
+        if (err) {
+            bot.sendMessage(chan,"**Kullanıcı bulunamadı !**");
+            return false;
+        }
+        var rp = "**" + response.username + "** kullanıcısının osu! profili hakkında bilgiler\n" +
 
-    "\n**Performans: **" + parseInt(response.pp_raw, 10).toLocaleString() + "pp (#" + Number(response.pp_rank).toLocaleString() + ")" +
-    "\n**Ülke: **" + alpha2full(response.country) + " (#" + Number(response.pp_country_rank).toLocaleString() + ")" +
-    "\n**Seviye: **" + parseInt(response.level, 10) +
-    "\n**Sıralama puanı: **" + Number(response.ranked_score).toLocaleString() +
-    "\n**Toplam puan: **" + Number(response.total_score).toLocaleString() +
-    "\n**İsabetlilik: **" + parseFloat(response.accuracy).toFixed(2) +
-    "\n**Oynama sayısı: **" + Number(response.playcount).toLocaleString() +
-    "\n**Toplam hit: **" + (parseInt(response.count300, 10) + parseInt(response.count100, 10) + parseInt(response.count50, 10)).toLocaleString() +
-    "\n**SS: **" + Number(response.count_rank_ss).toLocaleString() +
-    "** S: **" + Number(response.count_rank_s).toLocaleString() +
-    "** A: **" + Number(response.count_rank_a).toLocaleString();
-    return bot.sendMessage(chan,rp);
+        "\n**Performans: **" + parseInt(response.pp_raw, 10).toLocaleString() + "pp (#" + Number(response.pp_rank).toLocaleString() + ")" +
+        "\n**Ülke: **" + alpha2full(response.country) + " (#" + Number(response.pp_country_rank).toLocaleString() + ")" +
+        "\n**Seviye: **" + parseInt(response.level, 10) +
+        "\n**Sıralama puanı: **" + Number(response.ranked_score).toLocaleString() + " puan" +
+        "\n**Toplam puan: **" + Number(response.total_score).toLocaleString() + " puan" +
+        "\n**İsabetlilik: **" + "%" + parseFloat(response.accuracy).toFixed(2) +
+        "\n**Oynama sayısı: **" + Number(response.playcount).toLocaleString() +
+        "\n**Toplam hit sayısı: **" + (parseInt(response.count300, 10) + parseInt(response.count100, 10) + parseInt(response.count50, 10)).toLocaleString() +
+        "\n**SS: **" + Number(response.count_rank_ss).toLocaleString() +
+        "** S: **" + Number(response.count_rank_s).toLocaleString() +
+        "** A: **" + Number(response.count_rank_a).toLocaleString();
+        //bot.sendMessage(chan,rp);
+
+        osuApi.getUserBest(osuApi.user.byUsername(username), osuApi.mode.default, function(err, response) {
+            if (err) {
+                return console.log (err);
+            }
+            console.log(response[0])
+            rp += "\n**En iyi skor:** " + Number(response[0].score).toLocaleString() + " puan / " +  Number(response[0].maxcombo).toLocaleString() + " kombo (" +  Number(parseInt(response[0].pp, 10)).toLocaleString() + "pp)";
+            bot.sendMessage(chan,rp);
+        });
     });
 }
 
@@ -1038,7 +1047,7 @@ var commands = {
                     }
                 }
                 if(user && user.length >= 3 && strcon(user) && (mod == null || mod == "")){
-                    getUserDetail(user, msg.channel);
+                    getUserDetails(user, msg.channel);
                 } else if(user && user.length >= 3 && strcon(user) && mod == "taiko") {
                     bot.sendMessage(msg.channel, "**Henüz sadece standart mod istatistiklerini görebiliyoruz, söri.**")
                 } else if(user && user.length >= 3 && strcon(user) && mod == "ctb") {
