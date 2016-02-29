@@ -21,7 +21,8 @@ var afkList         = {},
     WhoList         = {},
     prefix          = '!',
     osuNickNames    = {},
-    faq             = {};
+    faq             = {},
+    osuTrChat       = false;
 //}
 // <Requires> {
 try {
@@ -1544,13 +1545,9 @@ bot.on("disconnected", function () {
 });
 
 bot.on("message", function (msg) {
-    //if(msg.channel.isPrivate) {
-    //    bot.sendMessage(msg.sender, "**PM den komut kabul etmiyoruz, söri.**");
-    //    return;
-    //}
-    //if(msg.channel.server.id == msg.channel.server.id) {
-    //    return;
-    //}
+    if(!osuTrChat) {
+        osuTrChat = bot.channels.get("id", "134666472864743424");
+    }
     if(msg.author.id != bot.user.id && checklink(msg.content)) {
         var txt = msg.content;
         var mode = txt.substr(txt.indexOf("sh/") + 3, 1);
@@ -1742,12 +1739,11 @@ bot.on("message", function (msg) {
 });
 
 bot.on("presence", function(oldUser, newUser) {
-	//if(status === "online"){
-	//logger.debug("presence update");
-	//}
 	try{
-	    var user = newUser;
-	    if(user.status != 'offline'){
+	    if(user.status === 'online'){
+            if(osuTrChat) {
+        	       bot.sendMessage(osuTrChat, user.name + " giriş yaptı!");
+            }
 	    	if(messagebox.hasOwnProperty(user.id)){
 	    		logger.debug("found message for " + user.id);
 	    		var message = messagebox[user.id];
@@ -1763,7 +1759,11 @@ bot.on("presence", function(oldUser, newUser) {
 	    		bot.sendMessage(channel,"**"+ user + " AFK iken Discord'dan çıktı.**");
 	    		delete afkList[user.id];
 	    		updateAfkList();
-	    	}
+	    	} else {
+                if(osuTrChat) {
+            	       bot.sendMessage(osuTrChat, user.name + " Discord'dan çıktı.");
+                }
+            }
 	    }
 	} catch(e) {}
 });
