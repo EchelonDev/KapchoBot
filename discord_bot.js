@@ -310,24 +310,25 @@ function getBeatmapDetail(beatmap,chan,mode) {
     }
 }
 
-function getUserDetail(username,chan) {
+function getUserDetail(username,chan,detail) {
     osuApi.getUser(osuApi.user.byUsername(username), function(err, response) {
     if (err) {
         bot.sendMessage(chan,"**Kullanıcı bulunamadı !**");
         return false;
     }
-    var rp = "**" + response.username + "** hakkında bilgiler\n" +
+    var rp = "**" + response.username + "** kullanıcısının osu! profili hakkında bilgiler\n" +
+
     "\n**Performans: **" + Number(response.pp_raw).toLocaleString() + " (#" + Number(response.pp_rank).toLocaleString() + ")" +
     "\n**Ülke: **" + alpha2full(response.country) + " (#" + Number(response.pp_country_rank).toLocaleString() + ")" +
+    "\n**Seviye: **" + parseInt(response.level, 10) +
     "\n**Sıralama puanı: **" + Number(response.ranked_score).toLocaleString() +
     "\n**Toplam puan: **" + Number(response.total_score).toLocaleString() +
     "\n**İsabetlilik: **" + parseFloat(response.accuracy).toFixed(2) +
     "\n**Oynama sayısı: **" + Number(response.playcount).toLocaleString() +
-    "\n**Seviye: **" + parseInt(response.level, 10) +
     "\n**Toplam hit: **" + (parseInt(response.count300, 10) + parseInt(response.count100, 10) + parseInt(response.count50, 10)).toLocaleString() +
     "\n**SS: **" + Number(response.count_rank_ss).toLocaleString() +
-    "\n**S: **" + Number(response.count_rank_s).toLocaleString() +
-    "\n**A: **" + Number(response.count_rank_a).toLocaleString();
+    "** S: **" + Number(response.count_rank_s).toLocaleString() +
+    "** A: **" + Number(response.count_rank_a).toLocaleString();
     return bot.sendMessage(chan,rp);
     });
 }
@@ -1021,11 +1022,17 @@ var commands = {
         process: function(bot,msg,suffix){
             try {
                 var req = "";
-                if(suffix && suffix.length > 3 && suffix != "takio" && suffix != "ctb" && suffix != "mania") {
+                console.log(suffix);
+                if(suffix && !suffix.startsWith("<") && suffix.length > 3 && suffix != "takio" && suffix != "ctb" && suffix != "mania") {
                     var args = suffix.split(' ');
     			    var user = args.shift();
     			    var mod = args.shift();
-                } else if(osuNickNames.hasOwnProperty(msg.sender.id)) {
+                } else if(suffix.startsWith("<")) {
+                    var args = suffix.split(' ');
+    			    var user = args.shift();
+    			    var mod = args.shift();
+					user = osuNickNames[user.substring(2, user.indexOf(">"))];
+				} else if(osuNickNames.hasOwnProperty(msg.sender.id)) {
                     var user = osuNickNames[msg.sender.id];
                     if(suffix) {
                         var mod = suffix;
