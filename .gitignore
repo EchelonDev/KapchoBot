@@ -6,6 +6,7 @@ caps/osu.png
 css
 images
 js
+node_modules
 
 # Windows image file caches
 Thumbs.db

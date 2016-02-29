@@ -310,6 +310,29 @@ function getBeatmapDetail(beatmap,chan,mode) {
     }
 }
 
+function getUserDetail(username,chan) {
+    osuApi.getUser(osuApi.user.byUsername(username), function(err, response) {
+    if (err) {
+        bot.sendMessage(chan,"**Kullanıcı bulunamadı !**");
+        return false;
+    }
+    var rp = "** " + response.username + "**" +
+    "\n**Performans: **" + response.pp_raw + "(#" + response.pp_rank + ")" +
+    "\n**Ülke: **" + alpha2full(response.country) + "(#" + response.pp_country_rank + ")" +
+    "\n**Sıralama puanı: **" + response.ranked_score +
+    "\n**İsabetlilik: **" + response.accuracy +
+    "\n**Oynama sayısı: **" + response.playcount +
+    "\n**Toplam puan: **" + response.total_score +
+    "\n**Seviye: **" + response.level +
+    "\n**Toplam hit: **" + (parseInt(response.count300, 10) + parseInt(response.count100, 10) + parseInt(response.count50, 10)) +
+    "\n**SS: **" + response.count_rank_ss +
+    "\n**S: **" + response.count_rank_s +
+    "\n**A: **" + response.count_rank_a +
+    return bot.sendMessage(chan,rp);
+    });
+}
+
+
 function alpha2full(ct) {
     return country.name(ct);
 }
@@ -989,6 +1012,40 @@ var commands = {
             }
             catch (e) {
                 logger.debug("Error !who at " + msg.channel + " : " + e);
+            }
+        }
+    },
+    "osu": {
+        usage:"<isim>",
+        description:"Kişinin Osu imzasını getirir.",
+        process: function(bot,msg,suffix){
+            try {
+                var req = "";
+                if(suffix && suffix.length > 3 && suffix != "takio" && suffix != "ctb" && suffix != "mania") {
+                    var args = suffix.split(' ');
+    			    var user = args.shift();
+    			    var mod = args.shift();
+                } else if(osuNickNames.hasOwnProperty(msg.sender.id)) {
+                    var user = osuNickNames[msg.sender.id];
+                    if(suffix) {
+                        var mod = suffix;
+                    }
+                }
+                if(user && user.length >= 3 && strcon(user) && (mod == null || mod == "")){
+                    getUserDetail(user, msg.channel);
+                } else if(user && user.length >= 3 && strcon(user) && mod == "taiko") {
+                    bot.sendMessage(msg.channel, "**Henüz sadece standart mod istatistiklerini görebiliyoruz, söri.**")
+                } else if(user && user.length >= 3 && strcon(user) && mod == "ctb") {
+                    bot.sendMessage(msg.channel, "**Henüz sadece standart mod istatistiklerini görebiliyoruz, söri.**")
+                } else if(user && user.length >= 3 && strcon(user) && mod == "mania") {
+                    bot.sendMessage(msg.channel, "**Henüz sadece standart mod istatistiklerini görebiliyoruz, söri.**")
+                } else {
+                    logger.debug("parameter problem in !osu at " + msg.channel);
+                    bot.sendMessage(msg.channel, "!osu komutuna en az 3 harflik bir parametre vermeniz gerekiyor, \"!osu peppy \" gibi.");
+                }
+            }
+            catch(e) {
+                 logger.debug("Error !osu at " + msg.channel + " : " + e);
             }
         }
     },
