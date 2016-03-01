@@ -788,6 +788,7 @@ var commands = {
     "afk": {
         usage: "<bırakacağınız mesaj>",
 		description: "Kişinin durumunu AFK yapar",
+        delete: true,
 		process: function(bot,msg,suffix) {
 			if(afkList.hasOwnProperty(msg.sender.id)){
 				if(afkList[msg.sender.id].status == "AFK" || afkList[msg.sender.id].status == "AFKT") {
@@ -1100,7 +1101,7 @@ var commands = {
     },
     "osusig": {
         usage:"[mod:opsiyonel] <isim>",
-        description:"Kişinin osu! imzasını getirir.",
+        description:"Kişinin osu! imzasını getirir. (İmzanın kendi sitesi için http://lemmmy.pw/osusig)",
         process: function(bot,msg,suffix){
             try {
                 var req = "";
@@ -1735,8 +1736,12 @@ bot.on("message", function (msg) {
             return;
         } else if(cmd) {
 			try{
-			    if(!cmd.disabled)
+			    if(!cmd.disabled) {
+                    if(cmd.delete) {
+                        bot.deleteMessage(msg);
+                    }
 				    cmd.process(bot,msg,suffix);
+                }
 
 			} catch(e){
 				if(Config.debug){
