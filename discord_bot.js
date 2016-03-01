@@ -12,17 +12,16 @@ var afkList         = {},
     Config          = {},
     developers      = {},
     gameList        = {},
-    isDeving        = false,
     jsonFolder      = './json/',
     messagebox      = {},
     Permissions     = {},
     Rules           = {},
-    selfMention     = false,
     WhoList         = {},
     prefix          = '!',
     osuNickNames    = {},
     faq             = {},
-    osuTrChat       = false;
+    osuTrChat       = false,
+    osuTrServer     = false;
 //}
 // <Requires> {
 try {
@@ -42,6 +41,9 @@ try{
 } catch(e){ //no config file, use defaults
 	Config.debug = false;
 	Config.respondToInvalid = false;
+	Config.trackOsu = true;
+	Config.trackLogin = false;
+	updateConfig();
 }
 
 var fs              = require('fs'),
@@ -114,6 +116,7 @@ function updateBanned(){updateJSON("banned.json",banned);}
 function updateAuth(){updateJSON("auth.json",AuthDetails);}
 function updateOsuNickNames(){updateJSON("osuNickNames.json",osuNickNames);}
 function updateFaq(){updateJSON("faq.json",faq);}
+function updateConfig(){updateJSON("config.json",Config);}
 //}
 // <setInterval & setTimeout> {
 setInterval(function() {
@@ -1412,7 +1415,6 @@ var commands = {
                         var args = suffix.split(" ");
                         var amount = args.shift();
                         var all = false;
-                        var offset = 2;
                         var error = false;
                         if(amount.startsWith("<")) {
                             var userid = amount.substring(2, amount.length-1);
@@ -1422,28 +1424,22 @@ var commands = {
                                 userid = userid.replace("<@", "");
                                 userid = userid.replace(">", "");
                             } else {
-                                bot.sendMessage(msg.channel, "**Lütfen geçerli bir kişi giriniz.** Kullanım : \"!mesajsil <sayı> <kişi>\" ya da \"!mesajsil <kişi>\"");
+                                bot.sendMessage(msg.channel, "**Lütfen geçerli bir kişi giriniz.** Kullanım : \"!mesajsil <sayı> <kişi>\"");
                                 error = true;
                             }
                         } else {
                             var userid = false;
                         }
-
                         if(amount == "hepsi") {
                             all = true;
-                            if(!userid) {
-                                offset = 1;
-                            } else if(msg.sender.id == userid) {
-                                offset = 1;
-                            }
                         } else if(!numcon(amount)){
-                            bot.sendMessage(msg.channel, "**Lütfen geçerli bir sayı giriniz.** Kullanım : \"!mesajsil <sayı> <kişi>\" ya da \"!mesajsil <kişi>\"");
+                            bot.sendMessage(msg.channel, "**Lütfen geçerli bir sayı giriniz.** Kullanım : \"!mesajsil <sayı> <kişi>\"");
                             error = true;
                         }
                         if(!error) {
         	                var msjlar = msg.channel.messages;
                             var count = 0;
-        	                for(var i = msjlar.length - offset; i > -1; i--) {
+        	                for(var i = msjlar.length - 1; i > -1; i--) {
                                 if(count >= amount) {
                                     break;
                                 }
@@ -1468,6 +1464,38 @@ var commands = {
 	            }
 	        } catch(e) {
 	            logger.debug("Error !mesajsil at " + msg.channel + " : " + e);
+	        }
+	    }
+	},
+	"toggle": {
+	    hidden: "1",
+	    process: function(bot,msg,suffix) {
+	        try {
+	            if(checkPermission(msg.sender.id, "admin")) {
+	                if(suffix == "osu!") {
+	                    if(Config.trackOsu) {
+	                        Config.trackOsu = false;
+	                        bot.sendMessage(msg.channel, "**osu!** oyununu takip etme bırakıldı.");
+	                    } else {
+	                        Config.trackOsu = true;
+	                        bot.sendMessage(msg.channel, "**osu!** oyunu takip ediliyor.");
+	                    }
+	                    updateConfig();
+	                } else if(suffix == "login") {
+	                    if(Config.trackLogin) {
+	                        Config.trackLogin = false;
+	                        bot.sendMessage(msg.channel, "Kullanıcı giriş çıkışlarını takip etme bırakıldı.");
+	                    } else {
+	                        Config.trackOsu = true;
+	                        bot.sendMessage(msg.channel, "Kullanıcı giriş çıkışları takip ediliyor.");
+	                    }
+	                    updateConfig();
+	                }
+	            } else {
+	                bot.sendMessage(msg.channel, "**" + msg.sender + ", bu komutu kullanmaya yetkiniz bulunmamaktadır.**");
+	            }
+	        } catch(e) {
+	            logger.debug("Error !toggle at " + msg.channel + " : " + e);
 	        }
 	    }
 	}
@@ -1537,6 +1565,12 @@ bot.on("ready", function () {
 	load_plugins();
 	var gtp = Math.floor(Math.random() * Object.keys(gameList).length) + 1;
 	bot.setPlayingGame(gameList[gtp]);
+	if(!osuTrChat) {
+        osuTrChat = bot.channels.get("id", "134666472864743424");
+    }
+    if(!osuTrServer) {
+        osuTrServer = bot.servers.get("id", "134666472864743424");
+    }
 });
 
 bot.on("disconnected", function () {
@@ -1595,6 +1629,7 @@ bot.on("message", function (msg) {
 		var cmd = commands[cmdTxt];
         if(cmdTxt === "help") {
             //help is special since it iterates over the other commands
+            bot.deleteMessage(msg);
             var texttosend = "\n***Kullanılabilir Komutlar:***\n";
 			for(var c in commands) {
 				var info = "**!" + c;
@@ -1667,7 +1702,7 @@ bot.on("message", function (msg) {
 		    var users = msg.mentions;
 		    var length = msg.mentions.length;
 		    for(var i = 0; i < length; i++) {
-		        if(msg.sender.id !== users[i].id || selfMention) {
+		        if(msg.sender.id !== users[i].id) {
 			        if(afkList.hasOwnProperty(users[i].id)) {
 			            if(afkList[users[i].id].status == "AFK") {
 		                    if(afkList[users[i].id].message) {
@@ -1740,35 +1775,58 @@ bot.on("message", function (msg) {
 
 bot.on("presence", function(oldUser, newUser) {
 	try{
-        var user = newUser;
-	    if(user.status == 'online'){
-            /*if(osuTrChat) {
-                logger.debug(user.name + " logged in!");
-                bot.sendMessage(osuTrChat, user.name + " giriş yaptı!");
-            }*/
-	    	if(messagebox.hasOwnProperty(user.id)){
-	    		logger.debug("found message for " + user.id);
-	    		var message = messagebox[user.id];
+	    if(oldUser.status != "online" && newUser.status == 'online') {
+            if(Config.trackLogin) {
+                if(osuTrChat && osuTrServer) {
+                    if(osuTrServer.members.has(newUser)) {
+                        logger.debug(newUser.name + " logged in!");
+                        bot.sendMessage(osuTrChat, "**" + newUser.name + "** giriş yaptı!");
+                    }
+                }
+            }
+	    	if(messagebox.hasOwnProperty(newUser.id)) {
+	    		logger.debug("found message for " + newUser.id);
+	    		var message = messagebox[newUser.id];
 	    		var channel = bot.channels.get("id",message.channel);
-	    		delete messagebox[user.id];
+	    		delete messagebox[newUser.id];
 	    		updateMessagebox();
 	    		bot.sendMessage(channel,message.content);
 	    	}
 	    }
-	    if(user.status == 'offline') {
-            logger.debug(user.name + " logged out!");
-	    	if(afkList.hasOwnProperty(user.id)) {
-	    		var channel = bot.channels.get("id", afkList[user.id].channel);
-	    		bot.sendMessage(channel,"**"+ user + " AFK iken Discord'dan çıktı.**");
-	    		delete afkList[user.id];
+	    else if(oldUser.status != "offline" && newUser.status == 'offline') {
+	    	if(afkList.hasOwnProperty(newUser.id)) {
+	    		var channel = bot.channels.get("id", afkList[newUser.id].channel);
+	    		bot.sendMessage(channel,"**"+ newUser + " AFK iken Discord'dan çıktı.**");
+	    		delete afkList[newUser.id];
 	    		updateAfkList();
 	    	} else {
-                /*if(osuTrChat) {
-            	       bot.sendMessage(osuTrChat, user.name + " Discord'dan çıktı.");
-                }*/
+	    	    if(Config.trackLogin) {
+                    if(osuTrChat && osuTrServer) {
+                        if(osuTrServer.members.has(newUser)) {
+                            logger.debug(newUser.name + " logged out!");
+                            bot.sendMessage(osuTrChat, "**" + newUser.name + "** çıkış yaptı!");
+                        }
+                    }
+	    	    }
+            }
+	    }
+	    if(Config.trackOsu && oldUser.game != newUser.game && newUser.game.name == "osu!") {
+	        if(osuTrChat && osuTrServer) {
+                if(osuTrServer.members.has(newUser)) {
+                    bot.sendMessage(osuTrChat, "**" + newUser.name + "** \"" + newUser.game.name + "\" oynamaya başladı!");
+                }
             }
 	    }
 	} catch(e) {}
+});
+
+bot.on("serverNewMember", function(server, user) {
+    console.log(server);
+    console.log(osuTrServer);
+    /*if(server.channels.has("id", osuTrServer.id)) {
+        console.log("**" + user.name + "** aramıza katıldı! Hoş geldin " + user + "!");
+        bot.sendMessage(osuTrChat, "**" + user.name + "** aramıza katıldı! Hoş geldin " + user + "!");
+    }*/
 });
 
 if(isset(AuthDetails.logtoken)) {
