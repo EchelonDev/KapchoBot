@@ -1030,27 +1030,56 @@ var commands = {
         }
     },
     "osu": {
-        usage:"<isim>",
-        description:"Kişinin Osu imzasını getirir.",
+        usage:"[mod:opsiyonel] <isim>",
+        description:"Kişinin osu! bilgilerini getirir.",
         process: function(bot,msg,suffix){
             try {
-                var req = "";
-                if(suffix && !suffix.startsWith("<") && suffix.length > 3 && suffix != "takio" && suffix != "ctb" && suffix != "mania") {
+                if(suffix && (suffix.indexOf("<@") == -1 && suffix.indexOf(">") == -1) && suffix.length >= 3 && suffix != "std" && suffix != "taiko" && suffix != "ctb" && suffix != "mania") {
                     var args = suffix.split(' ');
-    			    var user = args.shift();
-    			    var mod = args.shift();
-                } else if(suffix.startsWith("<")) {
+                    if(args.length == 1) {
+                        var user = args.shift();
+                    } else if(args.length > 1) {
+                        if(args[0] == "std" || args[0] == "taiko" || args[0] == "ctb" || args[0] == "mania") {
+                            var mod = args.shift();
+                            var user = args.join(" ");
+                        } else if(args[args.length-1] == "std" || args[args.length-1] == "taiko" || args[args.length-1] == "ctb" || args[args.length-1] == "mania"){
+                            var mod = args.pop();
+                            var user = args.join(" ");
+                        } else {
+                            var user = args.join(" ");
+                        }
+                    }
+                } else if(suffix && suffix.indexOf("<") > -1) {
                     var args = suffix.split(' ');
-    			    var user = args.shift();
-    			    var mod = args.shift();
-					user = osuNickNames[user.substring(2, user.indexOf(">"))];
+                    if(args.length == 1) {
+                        var user = args.shift();
+                        user = user.substring(2, user.indexOf(">"));
+                        if(osuNickNames.hasOwnProperty(user)) {
+                            user = osuNickNames[user];
+                        }
+                    } else if(args.length == 2) {
+                        var mod = args.shift();
+                        if(mod == "std" || mod == "taiko" || mod == "ctb" || mod == "mania") {
+                            var user = args.shift();
+                        } else {
+                            var user = mod;
+                            var mod = args.shift();
+                        }
+                        user = user.substring(2, user.indexOf(">"));
+                        if(osuNickNames.hasOwnProperty(user)) {
+                            user = osuNickNames[user];
+                        }
+                    }
 				} else if(osuNickNames.hasOwnProperty(msg.sender.id)) {
                     var user = osuNickNames[msg.sender.id];
                     if(suffix) {
                         var mod = suffix;
                     }
                 }
-                if(user && user.length >= 3 && strcon(user) && (mod == null || mod == "")){
+                while(user.indexOf(' ') > -1) {
+                    user = user.replace(' ', '_');
+                }
+                if(user && user.length >= 3 && strcon(user) && (mod == null || mod == "" || mod == "std")){
                     getUserDetails(user, msg.channel);
                 } else if(user && user.length >= 3 && strcon(user) && mod == "taiko") {
                     bot.sendMessage(msg.channel, "**Henüz sadece standart mod istatistiklerini görebiliyoruz, söri.**")
@@ -1060,7 +1089,8 @@ var commands = {
                     bot.sendMessage(msg.channel, "**Henüz sadece standart mod istatistiklerini görebiliyoruz, söri.**")
                 } else {
                     logger.debug("parameter problem in !osu at " + msg.channel);
-                    bot.sendMessage(msg.channel, "Lütfen düzgün bir isim giriniz, \"!osu peppy \" gibi.");
+
+                    bot.sendMessage(msg.channel, "Lütfen düzgün bir isim giriniz, \"!osu peppy \" gibi. / ");
                 }
             }
             catch(e) {
@@ -1069,22 +1099,57 @@ var commands = {
         }
     },
     "osusig": {
-        usage:"<isim>",
-        description:"Kişinin Osu imzasını getirir.",
+        usage:"[mod:opsiyonel] <isim>",
+        description:"Kişinin osu! imzasını getirir.",
         process: function(bot,msg,suffix){
             try {
                 var req = "";
-                if(suffix && suffix.length > 3 && suffix != "takio" && suffix != "ctb" && suffix != "mania") {
+                if(suffix && (suffix.indexOf("<@") == -1 && suffix.indexOf(">") == -1) && suffix.length >= 3 && suffix != "std" && suffix != "taiko" && suffix != "ctb" && suffix != "mania") {
                     var args = suffix.split(' ');
-    			    var user = args.shift();
-    			    var mod = args.shift();
-                } else if(osuNickNames.hasOwnProperty(msg.sender.id)) {
+                    if(args.length == 1) {
+                        var user = args.shift();
+                    } else if(args.length > 1) {
+                        if(args[0] == "std" || args[0] == "taiko" || args[0] == "ctb" || args[0] == "mania") {
+                            var mod = args.shift();
+                            var user = args.join(" ");
+                        } else if(args[args.length-1] == "std" || args[args.length-1] == "taiko" || args[args.length-1] == "ctb" || args[args.length-1] == "mania"){
+                            var mod = args.pop();
+                            var user = args.join(" ");
+                        } else {
+                            var user = args.join(" ");
+                        }
+                    }
+                } else if(suffix && suffix.indexOf("<") > -1) {
+                    var args = suffix.split(' ');
+                    if(args.length == 1) {
+                        var user = args.shift();
+                        user = user.substring(2, user.indexOf(">"));
+                        if(osuNickNames.hasOwnProperty(user)) {
+                            user = osuNickNames[user];
+                        }
+                    } else if(args.length == 2) {
+                        var mod = args.shift();
+                        if(mod == "std" || mod == "taiko" || mod == "ctb" || mod == "mania") {
+                            var user = args.shift();
+                        } else {
+                            var user = mod;
+                            var mod = args.shift();
+                        }
+                        user = user.substring(2, user.indexOf(">"));
+                        if(osuNickNames.hasOwnProperty(user)) {
+                            user = osuNickNames[user];
+                        }
+                    }
+				} else if(osuNickNames.hasOwnProperty(msg.sender.id)) {
                     var user = osuNickNames[msg.sender.id];
                     if(suffix) {
                         var mod = suffix;
                     }
                 }
-                if(user && user.length >= 3 && strcon(user) && (mod == null || mod == "")){
+                while(user.indexOf(' ') > -1) {
+                    user = user.replace(' ', '_');
+                }
+                if(user && user.length >= 3 && strcon(user) && (mod == null || mod == "" || mod == "std")){
                     req = "http://lemmmy.pw/osusig/sig.php?colour=hex" + Math.floor(Math.random()*16777215).toString(16) + "&uname="+ encodeURIComponent(user) +"&pp=2&countryrank&flagshadow&darktriangles&avatarrounding=4&rankedscore&xpbar&xpbarhex";
                 } else if(user && user.length >= 3 && strcon(user) && mod == "taiko") {
                     req = "http://lemmmy.pw/osusig/sig.php?colour=hex" + Math.floor(Math.random()*16777215).toString(16) + "&uname="+ encodeURIComponent(user) +"&mode=1&pp=2&countryrank&flagshadow&darktriangles&avatarrounding=4&rankedscore&xpbar&xpbarhex";
@@ -1094,7 +1159,7 @@ var commands = {
                     req = "http://lemmmy.pw/osusig/sig.php?colour=hex" + Math.floor(Math.random()*16777215).toString(16) + "&uname="+ encodeURIComponent(user) +"&mode=3&pp=2&countryrank&flagshadow&darktriangles&avatarrounding=4&rankedscore&xpbar&xpbarhex";
                 } else {
                     logger.debug("parameter problem in !osu at " + msg.channel);
-                    bot.sendMessage(msg.channel, "Lütfen düzgün bir isim giriniz, \"!osusig peppy \" veya \"!osusig peppy mania\" gibi. ");
+                    bot.sendMessage(msg.channel, "Lütfen düzgün bir isim giriniz, \"!osusig peppy \" veya \"!osusig mania peppy\" gibi. ");
                 }
                 download(req,"caps/osu.png",function() {
                    bot.sendFile(msg.channel,"caps/osu.png");
