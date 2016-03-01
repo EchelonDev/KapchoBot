@@ -1439,6 +1439,7 @@ var commands = {
                         if(!error) {
         	                var msjlar = msg.channel.messages;
                             var count = 0;
+                            amount++;
         	                for(var i = msjlar.length - 1; i > -1; i--) {
                                 if(count >= amount) {
                                     break;
