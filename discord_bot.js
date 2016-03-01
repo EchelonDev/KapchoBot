@@ -1740,11 +1740,12 @@ bot.on("message", function (msg) {
 
 bot.on("presence", function(oldUser, newUser) {
 	try{
-	    if(user.status === 'online'){
-            if(osuTrChat) {
+        var user = newUser;
+	    if(user.status == 'online'){
+            /*if(osuTrChat) {
                 logger.debug(user.name + " logged in!");
                 bot.sendMessage(osuTrChat, user.name + " giriş yaptı!");
-            }
+            }*/
 	    	if(messagebox.hasOwnProperty(user.id)){
 	    		logger.debug("found message for " + user.id);
 	    		var message = messagebox[user.id];
@@ -1762,9 +1763,9 @@ bot.on("presence", function(oldUser, newUser) {
 	    		delete afkList[user.id];
 	    		updateAfkList();
 	    	} else {
-                if(osuTrChat) {
+                /*if(osuTrChat) {
             	       bot.sendMessage(osuTrChat, user.name + " Discord'dan çıktı.");
-                }
+                }*/
             }
 	    }
 	} catch(e) {}
