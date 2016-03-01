@@ -21,7 +21,8 @@ var afkList         = {},
     osuNickNames    = {},
     faq             = {},
     osuTrChat       = false,
-    osuTrServer     = false;
+    osuTrServer     = false,
+    playingOsuList  = [];
 //}
 // <Requires> {
 try {
@@ -1477,18 +1478,23 @@ var commands = {
 	                    if(Config.trackOsu) {
 	                        Config.trackOsu = false;
 	                        bot.sendMessage(msg.channel, "**osu!** oyununu takip etme bırakıldı.");
+                            playingOsuList = [];
+                            updateConfig();
 	                    } else {
 	                        Config.trackOsu = true;
 	                        bot.sendMessage(msg.channel, "**osu!** oyunu takip ediliyor.");
+                            updateConfig();
 	                    }
 	                    updateConfig();
 	                } else if(suffix == "login") {
 	                    if(Config.trackLogin) {
 	                        Config.trackLogin = false;
 	                        bot.sendMessage(msg.channel, "Kullanıcı giriş çıkışlarını takip etme bırakıldı.");
+                            updateConfig();
 	                    } else {
 	                        Config.trackOsu = true;
 	                        bot.sendMessage(msg.channel, "Kullanıcı giriş çıkışları takip ediliyor.");
+                            updateConfig();
 	                    }
 	                    updateConfig();
 	                }
@@ -1813,7 +1819,11 @@ bot.on("presence", function(oldUser, newUser) {
 	    }
 	    if(Config.trackOsu && oldUser.game != newUser.game && newUser.game.name == "osu!") {
 	        if(osuTrChat && osuTrServer) {
-                if(osuTrServer.members.has(newUser)) {
+                if(osuTrServer.members.has(newUser) && playingOsuList.indexOf(newUser.id) == -1) {
+                    playingOsuList.push(newUser.id);
+                    if(playingOsuList.length > 5) {
+                        playingOsuList.shift();
+                    }
                     bot.sendMessage(osuTrChat, "**" + newUser.name + "** \"" + newUser.game.name + "\" oynamaya başladı!");
                 }
             }
