@@ -352,7 +352,7 @@ function alpha2full(ct) {
 }
 
 function strcon(str) {
-    if(/^[a-zA-Z0-9-_]+( [a-zA-Z0-9-_]+)*$/.test(str))
+    if(/^[a-zA-Z0-9-_\[\]]+([a-zA-Z0-9-_\[\]]+)*$/.test(str))
         return true;
     return false;
 }
@@ -1060,7 +1060,7 @@ var commands = {
                     bot.sendMessage(msg.channel, "**Henüz sadece standart mod istatistiklerini görebiliyoruz, söri.**")
                 } else {
                     logger.debug("parameter problem in !osu at " + msg.channel);
-                    bot.sendMessage(msg.channel, "!osu komutuna en az 3 harflik bir parametre vermeniz gerekiyor, \"!osu peppy \" gibi.");
+                    bot.sendMessage(msg.channel, "Lütfen düzgün bir isim giriniz, \"!osu peppy \" gibi.");
                 }
             }
             catch(e) {
@@ -1094,14 +1094,14 @@ var commands = {
                     req = "http://lemmmy.pw/osusig/sig.php?colour=hex" + Math.floor(Math.random()*16777215).toString(16) + "&uname="+ encodeURIComponent(user) +"&mode=3&pp=2&countryrank&flagshadow&darktriangles&avatarrounding=4&rankedscore&xpbar&xpbarhex";
                 } else {
                     logger.debug("parameter problem in !osu at " + msg.channel);
-                    bot.sendMessage(msg.channel, "!osu komutuna en az 3 harflik bir parametre vermeniz gerekiyor. \"!osu peppy \" veya \"!osu peppy mania\" gibi. ");
+                    bot.sendMessage(msg.channel, "Lütfen düzgün bir isim giriniz, \"!osusig peppy \" veya \"!osusig peppy mania\" gibi. ");
                 }
                 download(req,"caps/osu.png",function() {
                    bot.sendFile(msg.channel,"caps/osu.png");
                 });
             }
             catch(e) {
-                 logger.debug("Error !osu at " + msg.channel + " : " + e);
+                 logger.debug("Error !osusig at " + msg.channel + " : " + e);
             }
         }
     },
