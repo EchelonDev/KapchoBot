@@ -22,7 +22,8 @@ var afkList         = {},
     prefix          = '!',
     osuNickNames    = {},
     faq             = {},
-    osuTrChat       = false;
+    osuTrChat       = false,
+    osuTrServer     = false;
 //}
 // <Requires> {
 try {
@@ -1537,6 +1538,12 @@ bot.on("ready", function () {
 	load_plugins();
 	var gtp = Math.floor(Math.random() * Object.keys(gameList).length) + 1;
 	bot.setPlayingGame(gameList[gtp]);
+	if(!osuTrChat) {
+        osuTrChat = bot.channels.get("id", "134666472864743424");
+    }
+    if(!osuTrServer) {
+        osuTrServer = bot.servers.get("id", "134666472864743424");
+    }
 });
 
 bot.on("disconnected", function () {
@@ -1595,6 +1602,7 @@ bot.on("message", function (msg) {
 		var cmd = commands[cmdTxt];
         if(cmdTxt === "help") {
             //help is special since it iterates over the other commands
+            bot.deleteMessage(msg);
             var texttosend = "\n***Kullanılabilir Komutlar:***\n";
 			for(var c in commands) {
 				var info = "**!" + c;
@@ -1740,32 +1748,42 @@ bot.on("message", function (msg) {
 
 bot.on("presence", function(oldUser, newUser) {
 	try{
-        var user = newUser;
-	    if(user.status == 'online'){
-            /*if(osuTrChat) {
-                logger.debug(user.name + " logged in!");
-                bot.sendMessage(osuTrChat, user.name + " giriş yaptı!");
-            }*/
-	    	if(messagebox.hasOwnProperty(user.id)){
-	    		logger.debug("found message for " + user.id);
-	    		var message = messagebox[user.id];
+	    if(oldUser.status != "online" && newUser.status == 'online'){
+            if(osuTrChat && osuTrServer) {
+                if(osuTrServer.members.has(newUser)) {
+                    logger.debug(newUser.name + " logged in!");
+                    bot.sendMessage(osuTrChat, "**" + newUser.name + "** giriş yaptı!");
+                }
+            }
+	    	if(messagebox.hasOwnProperty(newUser.id)) {
+	    		logger.debug("found message for " + newUser.id);
+	    		var message = messagebox[newUser.id];
 	    		var channel = bot.channels.get("id",message.channel);
-	    		delete messagebox[user.id];
+	    		delete messagebox[newUser.id];
 	    		updateMessagebox();
 	    		bot.sendMessage(channel,message.content);
 	    	}
 	    }
-	    if(user.status == 'offline') {
-            logger.debug(user.name + " logged out!");
-	    	if(afkList.hasOwnProperty(user.id)) {
-	    		var channel = bot.channels.get("id", afkList[user.id].channel);
-	    		bot.sendMessage(channel,"**"+ user + " AFK iken Discord'dan çıktı.**");
-	    		delete afkList[user.id];
+	    else if(oldUser.status != "offline" && newUser.status == 'offline'){
+	    	if(afkList.hasOwnProperty(newUser.id)) {
+	    		var channel = bot.channels.get("id", afkList[newUser.id].channel);
+	    		bot.sendMessage(channel,"**"+ newUser + " AFK iken Discord'dan çıktı.**");
+	    		delete afkList[newUser.id];
 	    		updateAfkList();
 	    	} else {
-                /*if(osuTrChat) {
-            	       bot.sendMessage(osuTrChat, user.name + " Discord'dan çıktı.");
-                }*/
+                if(osuTrChat && osuTrServer) {
+                    if(osuTrServer.members.has(newUser)) {
+                        logger.debug(newUser.name + " logged out!");
+                        bot.sendMessage(osuTrChat, "**" + newUser.name + "** çıkış yaptı!");
+                    }
+                }
+            }
+	    }
+	    if(oldUser.game != newUser.game && isset(newUser.game.name)) {
+	        if(osuTrChat && osuTrServer) {
+                if(osuTrServer.members.has(newUser)) {
+                    bot.sendMessage(osuTrChat, "**" + newUser.name + "** \"" + newUser.game.name + "\" oynamaya başladı!");
+                }
             }
 	    }
 	} catch(e) {}
