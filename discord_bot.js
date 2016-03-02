@@ -1294,6 +1294,7 @@ var commands = {
 	"msg": {
 		usage: "<kişi> <mesaj>",
 		description: "Kişiye bir sonraki online oluşunda görmesi için mesaj bırakır.",
+        delete: true,
 		process: function(bot,msg,suffix) {
 			var args = suffix.split(' ');
 			var user = args.shift();
@@ -1307,10 +1308,10 @@ var commands = {
 			}
 			messagebox[target.id] = {
 				channel: msg.channel.id,
-				content: target + ", " + msg.author + " diyorki: " + message
+				content: target + ", " + msg.author.name + " diyorki: " + message
 			};
 			updateMessagebox();
-			bot.sendMessage(msg.channel,"mesaj kaydedildi.");
+			bot.sendMessage(msg.channel, "**" + msg.sender.name + "**'in **" + target.name + "**'e mesajı kaydedildi.");
 		}
 	},
     "ttv":{
