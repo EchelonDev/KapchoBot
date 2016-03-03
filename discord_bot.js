@@ -1276,7 +1276,7 @@ var commands = {
     },
 	"zar": {
 		usage: "[üst değer]",
-		description: "1 ile üst değer arasında rastgele sayı üretir. Verilmezse üst değer 10 alınır.",
+		description: "1 ile üst değer arasında rastgele sayı üretir. (Varsayılan üst değer: 6)",
 		process: function(bot,msg,suffix) {
              try {
                  if(!culcon(suffix))
