@@ -1505,14 +1505,14 @@ var commands = {
                         }
                         if(amount == "hepsi") {
                             all = true;
-                        } else if(!numcon(amount)){
+                        } else if(!numcon(amount)) {
                             bot.sendMessage(msg.channel, "**Lütfen geçerli bir sayı giriniz.** Kullanım : \"!mesajsil <sayı> <kişi>\"");
                             error = true;
                         }
                         if(!error) {
+                            bot.deleteMessage(msg);
         	                var msjlar = msg.channel.messages;
                             var count = 0;
-                            amount++;
         	                for(var i = msjlar.length - 1; i > -1; i--) {
                                 if(count >= amount) {
                                     break;
@@ -1904,7 +1904,7 @@ bot.on("presence", function(oldUser, newUser) {
 
 bot.on("serverNewMember", function(server, user) {
     if(server.id == osuTrChat) {
-        bot.sendMessage(osuTrChat, "**" + user.name + "** aramıza katıldı! Hoş geldin " + user + "!");
+        bot.sendMessage(osuTrChatvarm, "**" + user.name + "** aramıza katıldı! Hoş geldin " + user + "!");
     }
 });
 
