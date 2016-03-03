@@ -1637,7 +1637,7 @@ var caps = {
         process: function() { return ("./caps/bait/ " + (Math.floor(Math.random() * 139) + 1).toString() + ".png"); }
     },
     "rauf": {
-        process: function() { return ("./caps/rauf/ " + (Math.floor(Math.random() * 37) + 1).toString() + ".jpg"); }
+        process: function() { return ("./caps/rauf/" + (Math.floor(Math.random() * 37) + 1).toString() + ".jpg"); }
     }
 };
 
