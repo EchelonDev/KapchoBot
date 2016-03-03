@@ -1036,7 +1036,7 @@ var commands = {
         }
     },
     "osu": {
-        usage:"[mod:opsiyonel] <isim>",
+        usage:"<isim>",
         description:"Kişinin osu! bilgilerini getirir.",
         process: function(bot,msg,suffix){
             try {
@@ -1702,29 +1702,71 @@ bot.on("message", function (msg) {
 		    cmdTxt = alias[cmdTxt];
 		var cmd = commands[cmdTxt];
         if(cmdTxt === "help") {
-            //help is special since it iterates over the other commands
-            bot.deleteMessage(msg);
-            var texttosend = "\n***Kullanılabilir Komutlar:***\n";
-			for(var c in commands) {
-				var info = "**!" + c;
-				var usage = commands[c].usage;
-                var hidden = commands[c].hidden;
-                var disabled = commands[c].disabled;
-                if(hidden || disabled) {
-                    continue;
+            try {
+                var texttosend = "";
+                if(suffix) {
+                    var args = suffix.split(' ');
+                    var helpCmd = args.shift();
+                    if(commands.hasOwnProperty(helpCmd)) {
+                        var c = commands[helpCmd];
+                        var info = "**" + prefix + helpCmd + "**";
+                        var usage = commands[helpCmd].usage;
+                        var hidden = commands[helpCmd].hidden;
+                        var disabled = commands[helpCmd].disabled;
+                        if(hidden || disabled) {
+                            return;
+                        }
+
+                        var description = commands[helpCmd].description;
+                        if(description){
+                        	info += " - " + description;
+                        }
+                        info += "\r\n\r\n**Kullanım:** `" + prefix + helpCmd;
+                        if(usage){
+                        	 info += " " + usage;
+                        }
+                        info += "`";
+                        texttosend += info + "\r\n";
+                    } else {
+                        texttosend = "**" + helpCmd + "** diye bir komut bulunamadı.";
+                    }
+                    if(msg.mentions.length > 0) {
+                        var mentionText = "";
+                        for(var i = 0; i < args.length; i++) {
+                            if(args[i].startsWith('<@') && args[i].endsWith('>')) {
+                                if(mentionText.length > 0) {
+                                    mentionText += ", " + args[i];
+                                } else {
+                                    mentionText += args[i];
+                                }
+                            }
+                        }
+                        bot.sendMessage(msg.channel, mentionText, false, function() { bot.sendMessage(msg.channel, texttosend)});
+                    } else {
+                        bot.sendMessage(msg.sender, texttosend);
+                    }
+                } else {
+    			    for(var c in commands) {
+    			    	var info = "**" + prefix + c + "**";
+    			    	var usage = commands[c].usage;
+                        var hidden = commands[c].hidden;
+                        var disabled = commands[c].disabled;
+                        if(hidden || disabled) {
+                            continue;
+                        }
+    			    	var description = commands[c].description;
+    			    	if(description){
+    			    		info += " - " + description;
+    			    	}
+    			    	texttosend += info + "\r\n";
+    			    }
+    			    texttosend += "\r\nTek bir komut hakkında daha!s çok bilgi için `!help <komut>`";
+                    bot.sendMessage(msg.sender,texttosend);
                 }
-				if(usage){
-					info += " " + usage;
-				}
-				info += "**";
-				var description = commands[c].description;
-				if(description){
-					info += " - " + description;
-				}
-				texttosend += info + "\r\n";
-			}
-            bot.sendMessage(msg.author,texttosend);
-            return;
+                bot.deleteMessage(msg);
+            } catch(e) {
+                console.log("Error at help: " + e);
+            }
         } else if(cmdTxt === "faq" && suffix === "liste") {
             var keys = [];
             var reply = "```Faq Komutları:\n\n";
