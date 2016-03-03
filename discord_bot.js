@@ -791,7 +791,7 @@ var commands = {
         }
     },
     "afk": {
-        usage: "<bırakacağınız mesaj>",
+        usage: "[süre:opsiyonel] <bırakacağınız mesaj>",
 		description: "Kişinin durumunu AFK yapar",
         delete: true,
 		process: function(bot,msg,suffix) {
@@ -1751,6 +1751,7 @@ bot.on("message", function (msg) {
     			    	var usage = commands[c].usage;
                         var hidden = commands[c].hidden;
                         var disabled = commands[c].disabled;
+
                         if(hidden || disabled) {
                             continue;
                         }
@@ -1794,6 +1795,9 @@ bot.on("message", function (msg) {
 		} else if(caps.hasOwnProperty(cmdTxt)) {
 		    try {
 		        var cap = caps[cmdTxt];
+                if(cmdTxt == "bangif") {
+                    bot.deleteMessage(msg);
+                }
 		        if(cap.hasOwnProperty("process")) {
 		                var path = cap.process();
 		                var pic = path.substr(path.lastIndexOf('/')+1);
