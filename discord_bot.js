@@ -20,7 +20,7 @@ var afkList         = {},
     prefix          = '!',
     osuNickNames    = {},
     faq             = {},
-    osuTrChat       = '134666472864743424'
+    osuTrChat       = '134666472864743424',
     osuTrServer     = false,
     playingGameList  = [],
     gameTrackList   = {};
@@ -1637,7 +1637,7 @@ var caps = {
         process: function() { return ("./caps/bait/ " + (Math.floor(Math.random() * 139) + 1).toString() + ".png"); }
     },
     "rauf": {
-        process: function() { return ("./caps/rauf/" + (Math.floor(Math.random() * 37) + 1).toString() + ".jpg"); }
+        process: function() { return ("./caps/rauf/rauf" + (Math.floor(Math.random() * 37) + 1).toString() + ".jpg"); }
     }
 };
 
