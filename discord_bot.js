@@ -995,7 +995,6 @@ var commands = {
         description:"Botun kişiler hakkındaki düşüncelerini getirir.",
         process: function(bot,msg,suffix) {
             try {
-                logger.debug("Sending !who to " + msg.channel);
                 if(suffix.startsWith("add ")) {
                     if(checkPermission(msg.sender.id, "who") || checkRole(msg.channel.server.id,msg.sender.id,"Babalar") || checkRole(msg.channel.server.id,msg.sender.id,"Dedeler")) {
                         var args = suffix.split(' ');
@@ -1014,7 +1013,6 @@ var commands = {
                         args.shift();
 			            var user = args.shift();
                         if(WhoList.hasOwnProperty(user)) {
-                            logger.debug("Sending !who to " + msg.channel);
                             delete WhoList[user.toLowerCase()];
                             updateWhoList();
                             bot.sendMessage(msg.channel, "**Who listesinden \"" + user + "\" silindi.**");
@@ -1024,7 +1022,29 @@ var commands = {
                     } else {
                     bot.sendMessage(msg.channel,"**Sen benim babam değilsin !!!**");
                     }
+                /*} else if(suffix == "liste detay") {
+                    var text = JSON.stringify(WhoList, null, 2);
+                    bot.sendMessage(msg.sender, text.substring(0, 2000), false, function() {
+                        if(text.length > 2000) {
+                            bot.sendMessage(msg.sender, text.substring(2000, 4000), false, function() {
+                                if(text.length > 4000) {
+                                    bot.sendMessage(msg.sender, text.substring(4000, 6000), false, function() {
+                                        if(text.length > 6000) {
+                                            bot.sendMessage(msg.sender, text.substring(6000, 8000));
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
+                }*/
+                } else if(suffix = "liste") {
+                    var reply = "```Who Listesi:\n\n";
+                    for(var k in WhoList) reply+= k + "\n";
+                    reply += "```";
+                    bot.sendMessage(msg.sender, reply);
                 } else if(suffix) {
+                    logger.debug("Sending !who to " + msg.channel);
                     bot.sendMessage(msg.channel,whois(suffix));
                 } else {
                     bot.sendMessage(msg.channel,"**Kimden bahsediyorsun ?**");
@@ -1453,6 +1473,15 @@ var commands = {
                     } else {
                     bot.sendMessage(msg.channel,"**Bu komutu kullanmak için gerekli yetkiye sahip değilsiniz.**");
                     }
+                } else if(suffix == "liste detay") {
+                        bot.sendMessage(msg.sender, "```JSON\n" + JSON.stringify(faq, null, 2) + "```");
+                } else if(suffix = "liste") {
+                    var reply = "```Faq Komutları:\n\n";
+                    for(var k in faq) reply+= k + "\n";
+                    reply += "```";
+                    bot.sendMessage(msg.channel, reply);
+                } else if(suffix.startsWith("you")) {
+                    bot.sendMessage(msg.channel, msg.sender + ", lütfen beni başkasına küfür etmek için kullanmayınız.");
                 } else if(suffix) {
                     var soru = suffix;
                     var mention = false;
@@ -1768,16 +1797,6 @@ bot.on("message", function (msg) {
             } catch(e) {
                 console.log("Error at help: " + e);
             }
-        } else if(cmdTxt === "faq" && suffix === "liste") {
-            var keys = [];
-            var reply = "```Faq Komutları:\n\n";
-            for(var k in faq) reply+= k + "\n";
-            reply += "```";
-            bot.sendMessage(msg.channel, reply);
-            return;
-        } else if(cmdTxt === "faq" && suffix === "liste detay") {
-            bot.sendMessage(msg.channel, "```JSON\n" + JSON.stringify(faq, null, 2) + "```");
-            return;
         } else if(cmd) {
 			try{
 			    if(!cmd.disabled) {
