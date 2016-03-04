@@ -341,7 +341,7 @@ function getUserDetails(username,chan) {
         "** A: **" + Number(response.count_rank_a).toLocaleString();
         //bot.sendMessage(chan,rp);
         var req = "https://a.ppy.sh/" + response.user_id;
-        var newLink = "*http://new.ppy.sh/u/" + response.username + "*";
+        var newLink = "*http://new.ppy.sh/u/" + encodeURIComponent(response.username) + "*";
 
         osuApi.getUserBest(osuApi.user.byUsername(username), osuApi.mode.default, function(err, response) {
             if (err) {
