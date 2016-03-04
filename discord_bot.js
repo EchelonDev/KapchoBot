@@ -340,13 +340,19 @@ function getUserDetails(username,chan) {
         "** S: **" + Number(response.count_rank_s).toLocaleString() +
         "** A: **" + Number(response.count_rank_a).toLocaleString();
         //bot.sendMessage(chan,rp);
+        var req = "https://a.ppy.sh/" + response.user_id;
+        var newLink = "*http://new.ppy.sh/u/" + response.username + "*";
 
         osuApi.getUserBest(osuApi.user.byUsername(username), osuApi.mode.default, function(err, response) {
             if (err) {
                 return console.log (err);
             }
             rp += "\n**En iyi skor:** " + Number(response[0].score).toLocaleString() + " puan / " +  Number(response[0].maxcombo).toLocaleString() + " kombo (" +  parseFloat(response[0].pp).toFixed(2) + "pp)";
+            rp += "\n" + newLink;
             bot.sendMessage(chan,rp);
+            download(req,"caps/osu.png", function() {
+               bot.sendFile(chan,"caps/osu.png");
+            });
         });
     });
 }
@@ -1122,7 +1128,6 @@ var commands = {
                     bot.sendMessage(msg.channel, "**Henüz sadece standart mod istatistiklerini görebiliyoruz, söri.**")
                 } else {
                     logger.debug("parameter problem in !osu at " + msg.channel);
-
                     bot.sendMessage(msg.channel, "Lütfen düzgün bir isim giriniz, \"!osu peppy \" gibi. / ");
                 }
             }
@@ -1194,8 +1199,8 @@ var commands = {
                     logger.debug("parameter problem in !osu at " + msg.channel);
                     bot.sendMessage(msg.channel, "Lütfen düzgün bir isim giriniz, \"!osusig peppy \" veya \"!osusig mania peppy\" gibi. ");
                 }
-                download(req,"caps/osu.png",function() {
-                   bot.sendFile(msg.channel,"caps/osu.png");
+                download(req,"caps/osusig.png", function() {
+                   bot.sendFile(msg.channel,"caps/osusig.png");
                 });
             }
             catch(e) {
