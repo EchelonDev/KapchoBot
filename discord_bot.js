@@ -1038,11 +1038,18 @@ var commands = {
                         }
                     });
                 }*/
-                } else if(suffix = "liste") {
+                } else if(suffix == "liste") {
                     var reply = "```Who Listesi:\n\n";
-                    for(var k in WhoList) reply+= k + "\n";
+                    for(var k in WhoList) {
+                        if(k.startsWith('<@') && k.endsWith('>')) {
+                            reply += '@' + bot.users.get("id", k.substring(2, k.indexOf('>'))).name + ",";
+                        } else {
+                            reply += k + ",";
+                        }
+                    }
                     reply += "```";
                     bot.sendMessage(msg.sender, reply);
+                    bot.deleteMessage(msg);
                 } else if(suffix) {
                     logger.debug("Sending !who to " + msg.channel);
                     bot.sendMessage(msg.channel,whois(suffix));
@@ -1477,9 +1484,10 @@ var commands = {
                         bot.sendMessage(msg.sender, "```JSON\n" + JSON.stringify(faq, null, 2) + "```");
                 } else if(suffix = "liste") {
                     var reply = "```Faq Komutları:\n\n";
-                    for(var k in faq) reply+= k + "\n";
+                    for(var k in faq) reply+= k + ", ";
                     reply += "```";
-                    bot.sendMessage(msg.channel, reply);
+                    bot.sendMessage(msg.sender, reply);
+                    bot.deleteMessage(msg);
                 } else if(suffix.startsWith("you")) {
                     bot.sendMessage(msg.channel, msg.sender + ", lütfen beni başkasına küfür etmek için kullanmayınız.");
                 } else if(suffix) {
