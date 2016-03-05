@@ -6,7 +6,7 @@ var logger = log4js.getLogger('cheese');
 // <Variables> {
 var afkList         = {},
     alias           = {},
-    version         = "1.1.9dev",
+    version         = "1.2dev",
     banned          = {},
     ChangeBot       = {},
     Config          = {},
