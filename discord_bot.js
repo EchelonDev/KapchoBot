@@ -649,15 +649,16 @@ var commands = {
         hidden:"1",
         description: "Prints the stats from the instance into the chat.",
         process: function(bot, msg, suffix) {
-            if(checkPermission(msg.sender.id,"dev")) {
+            //if(checkPermission(msg.sender.id,"dev")) {
                 var msgArray = [];
                 msgArray.push("Uptime : " + (Math.round(bot.uptime/(1000*60*60))) + " hours, " + (Math.round(bot.uptime/(1000*60))%60) + " minutes, and " + (Math.round(bot.uptime/1000)%60) + " seconds.");
                 msgArray.push("I am in **" + bot.servers.length + "** servers, and in **" + bot.channels.length + "** channels.");
                 msgArray.push("Currently, I'm connected to **" + bot.users.length + "** different people");
                 msgArray.push("My current username is **" + bot.user + "**, and right now, I am at v**" + version + "**");
+                msgArray.push("My owner is <@111476801762537472>, and he is awesome.");
                 logger.debug(msg.sender + " requested the bot status.");
                 bot.sendMessage(msg.channel, msgArray);
-            }
+            //}
         }
     },
     "info": {
