@@ -655,7 +655,7 @@ var commands = {
                 msgArray.push("I am in **" + bot.servers.length + "** servers, and in **" + bot.channels.length + "** channels.");
                 msgArray.push("Currently, I'm connected to **" + bot.users.length + "** different people");
                 msgArray.push("My current username is **" + bot.user + "**, and right now, I am at v**" + version + "**");
-                msgArray.push("My owner is <@111476801762537472>, and he is awesome.");
+                msgArray.push("My owners are <@111476801762537472> and <@134987945827368960>, they are awesome.");
                 logger.debug(msg.sender + " requested the bot status.");
                 bot.sendMessage(msg.channel, msgArray);
             //}
