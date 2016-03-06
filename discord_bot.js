@@ -808,10 +808,9 @@ var commands = {
 					var afkTime = timediff(date1, Date());
 					delete afkList[msg.sender.id];
 					updateAfkList();
-					var reply = "**" + msg.sender + " artık AFK değil,";
+					var reply = "**" + msg.sender.name + "** artık AFK değil,";
 					reply += timeFormatString(afkTime.hours, afkTime.minutes, afkTime.seconds);
-					reply += " sonra";
-					reply += " geri döndü.**";!
+					reply += " sonra geri döndü.";!
 					bot.sendMessage(msg.channel, reply);
 				}
 			}
@@ -851,27 +850,41 @@ var commands = {
 				            updateAfkList();
 				            if(h && m) {
 				                if(h > 8760 || m > 8760*60) {
-				                    bot.sendMessage(msg.channel, "**" + msg.sender + " öldü.**");
+				                    bot.sendMessage(msg.channel, "**" + msg.sender.name + " öldü.**");
 				                } else {
-				                    bot.sendMessage(msg.channel, "**" + msg.sender + " " + h + " saat " + m + " dakika boyunca AFK.**");
-				                }
+                                    if(afkMessage.length > 0) {
+                                        bot.sendMessage(msg.channel, "**" + msg.sender.name + "** " + h + " saat " + m + " dakika boyunca AFK çünkü \"" + afkMessage + "\"");
+                                    } else {
+				                        bot.sendMessage(msg.channel, "**" + msg.sender.name + "** " + h + " saat " + m + " dakika boyunca AFK.");
+                                    }
+                                }
 
 				            }
 				            else if(h) {
 				                if(h > 8760) {
-				                    bot.sendMessage(msg.channel, "**" + msg.sender + " öldü.**");
+				                    bot.sendMessage(msg.channel, "**" + msg.sender.name + "** öldü.");
 				                } else {
-				                    bot.sendMessage(msg.channel, "**" + msg.sender + " " + h + " saat boyunca AFK.**");
+                                    if(afkMessage.length > 0) {
+                                        bot.sendMessage(msg.channel, "**" + msg.sender.name + "** " + h + " saat boyunca AFK çünkü \"" + afkMessage + "\"");
+                                    } else {
+                                        bot.sendMessage(msg.channel, "**" + msg.sender.name + "** " + h + " saat boyunca AFK.");
+                                    }
+
 				                }
 				            }
 				            else if(m) {
 				                if(m > 8760) {
-				                    bot.sendMessage(msg.channel, "**" + msg.sender + " öldü.**");
+				                    bot.sendMessage(msg.channel, "**" + msg.sender.name + "** öldü.**");
 				                } else {
-				                    bot.sendMessage(msg.channel, "**" + msg.sender + " " +  m + " dakika boyunca AFK.**");
+                                    if(afkMessage.length > 0) {
+                                        bot.sendMessage(msg.channel, "**" + msg.sender.name + "** " +  m + " dakika boyunca AFK çünkü \"" + afkMessage + "\"");
+                                    } else {
+                                        bot.sendMessage(msg.channel, "**" + msg.sender.name + "** " +  m + " dakika boyunca AFK.");
+                                    }
+
 				                }
 				            }
-				            else bot.sendMessage(msg.channel, "**" + msg.sender + " artık AFK.** (<@134987945827368960> mümkün olmayan kod)");
+				            else bot.sendMessage(msg.channel, "**" + msg.sender.name + "** artık AFK. (<@134987945827368960> mümkün olmayan kod)");
 			            }
 			            else {
 			                afkList[msg.sender.id] = {
@@ -882,7 +895,7 @@ var commands = {
 				                afkTime: false
 				            };
 				            updateAfkList();
-				            bot.sendMessage(msg.channel, "**" + msg.sender + " artık AFK.**");
+				            bot.sendMessage(msg.channel, "**" + msg.sender.name + "** artık AFK.");
 			            }
 			        }
 			        else {
@@ -894,7 +907,7 @@ var commands = {
 				            afkTime: false
 				        };
 				        updateAfkList();
-				        bot.sendMessage(msg.channel, "**" + msg.sender + " artık AFK.**");
+				        bot.sendMessage(msg.channel, "**" + msg.sender.name + "** artık AFK çünkü \"" + suffix + "\"");
 			        }
 			    }
 			    else {
@@ -906,7 +919,7 @@ var commands = {
 				        afkTime: false
 				    };
 				    updateAfkList();
-				    bot.sendMessage(msg.channel, "**" + msg.sender + " artık AFK.**");
+				    bot.sendMessage(msg.channel, "**" + msg.sender.name + "** artık AFK.");
 			    }
 			}
 		}
@@ -1987,7 +2000,7 @@ bot.on("presence", function(oldUser, newUser) {
 
 bot.on("serverNewMember", function(server, user) {
     if(server.id == osuTrChat) {
-        bot.sendMessage(osuTrChatvarm, "**" + user.name + "** aramıza katıldı! Hoş geldin " + user + "!");
+        bot.sendMessage(osuTrChat, "**" + user.name + "** aramıza katıldı! Hoş geldin " + user + "!");
     }
 });
 
