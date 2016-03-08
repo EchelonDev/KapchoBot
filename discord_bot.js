@@ -1781,7 +1781,7 @@ bot.on("message", function (msg) {
 
                         var description = commands[helpCmd].description;
                         if(description){
-                        	info += " - " + description;
+                        	info += " | " + description;
                         }
                         info += "\r\n\r\n**Kullanım:** `" + prefix + helpCmd;
                         if(usage){
@@ -1819,9 +1819,9 @@ bot.on("message", function (msg) {
                         }
     			    	var description = commands[c].description;
     			    	if(description){
-    			    		info += " - " + description;
+    			    		info += " | `" + description;
     			    	}
-    			    	texttosend += info + "\r\n";
+    			    	texttosend += info + "`\r\n";
     			    }
     			    texttosend += "\r\nTek bir komut hakkında daha!s çok bilgi için `!help <komut>`";
                     bot.sendMessage(msg.sender,texttosend);
