@@ -651,11 +651,13 @@ var commands = {
         process: function(bot, msg, suffix) {
             //if(checkPermission(msg.sender.id,"dev")) {
                 var msgArray = [];
+                var awa = bot.users.get("id", "111476801762537472");
+                var non = bot.users.get("id", "134987945827368960");
                 msgArray.push("Uptime : " + (Math.round(bot.uptime/(1000*60*60))) + " hours, " + (Math.round(bot.uptime/(1000*60))%60) + " minutes, and " + (Math.round(bot.uptime/1000)%60) + " seconds.");
                 msgArray.push("I am in **" + bot.servers.length + "** servers, and in **" + bot.channels.length + "** channels.");
                 msgArray.push("Currently, I'm connected to **" + bot.users.length + "** different people");
-                msgArray.push("My current username is **" + bot.user + "**, and right now, I am at v**" + version + "**");
-                msgArray.push("My owners are <@111476801762537472> and <@134987945827368960>, they are awesome.");
+                msgArray.push("My current username is **" + bot.user.name + "**, and right now, I am at v**" + version + "**");
+                msgArray.push("My owners are **" + awa.name + "** and **" + non.name + "**, they are awesome.");
                 logger.debug(msg.sender + " requested the bot status.");
                 bot.sendMessage(msg.channel, msgArray);
             //}
