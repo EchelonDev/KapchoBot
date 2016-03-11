@@ -1653,6 +1653,7 @@ var caps = {
     "adeyisd": "adeyisd.jpg",
     "dickbutt": "dickbutt.jpg",
     "bangif": "ban.gif",
+    "dealwithit": "dealwithit.gif",
     "bravo": {
         path: "nonfic/",
         name: "bravo.jpg"
