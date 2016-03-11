@@ -1503,7 +1503,7 @@ var commands = {
                     }
                 } else if(suffix == "liste detay") {
                         bot.sendMessage(msg.sender, "```JSON\n" + JSON.stringify(faq, null, 2) + "```");
-                } else if(suffix = "liste") {
+                } else if(suffix == "liste") {
                     var reply = "```Faq Komutları:\n\n";
                     for(var k in faq) reply+= k + ", ";
                     reply += "```";
@@ -1641,7 +1641,7 @@ var commands = {
 
 var caps = {
     "mekanik": "mekanik.png",
-    "brainpower2": "brainpower2.png",
+    "brainpower2": "brainpower.png",
     "dabbe": "dabbe.jpg",
     "termos": "termos.jpg",
     "bayrak": "bayrak.jpg",
