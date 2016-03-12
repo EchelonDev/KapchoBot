@@ -6,7 +6,7 @@ var logger = log4js.getLogger('cheese');
 // <Variables> {
 var afkList         = {},
     alias           = {},
-    version         = "1.2dev",
+    version         = "1.2.1dev",
     banned          = {},
     ChangeBot       = {},
     Config          = {},
@@ -446,6 +446,12 @@ function checkRole(serverid, user, role) {
 //}
 // <Commands> {
 var commands = {
+  "jugenmujugenmugokonosurikekaijarisugesugematsufunfaimatsufuraimatsukurunetokoronisumiyapparikojiyapparikojibaibobaibobaiboshuringashuringanugurindaigurindainobomboribombonanojoukyuumechousuke":{
+    description: 'lol :P',
+    	process: function(bot,msg,suffix) {
+        bot.sendMessage(msg.channel, msg.author + ", did you even...");
+      }
+  }
   "git": {
 		description: 'Botun github sayfasını atar',
     	process: function(bot,msg,suffix) {
