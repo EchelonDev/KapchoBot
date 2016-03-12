@@ -451,7 +451,7 @@ var commands = {
     	process: function(bot,msg,suffix) {
         bot.sendMessage(msg.channel, msg.author + ", did you even...");
       }
-  }
+  },
   "git": {
 		description: 'Botun github sayfasını atar',
     	process: function(bot,msg,suffix) {
