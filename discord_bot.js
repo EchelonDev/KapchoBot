@@ -105,8 +105,6 @@ var bot             = new Discord.Client();
 var ttvc            = new TwitchClient(account);
 var osuApi          = new Osu.api({apiKey: '4d10da6e0779eada0ca9000f709b612f4643e7fe'});
 var child_process   = require("child_process");
-var bnet = require('battlenet-api')('eaauqp8c9qy9jmxq9sg2g32v8xkgqs49');
-var d3 = bnet.d3;
 //}
 // <UpdateFile> {
 function updateJSON(fnjson, fjson) {
@@ -359,16 +357,6 @@ function getUserDetails(username,chan) {
     });
 }
 
-function getD3Details(chan,locale,utag) {
-  d3.profile.hero({origin: locale, tag: utag}, (error,body) => {
-    if (err) {
-        bot.sendMessage(chan,"Hata : ```" + err + "```");
-        return false;
-    } else {
-      logger.debug(body);
-    }
-  })
-}
 
 function alpha2full(ct) {
     return country.name(ct);
@@ -458,15 +446,6 @@ function checkRole(serverid, user, role) {
 //}
 // <Commands> {
 var commands = {
-  "d3stats": {
-    description: 'Experimental: Diablo 3 stat getirir.',
-    	process: function(bot,msg,suffix) {
-        var args = suffix.split(' ');
-        var utag = args.shift();
-        var locale = args.join(' ');
-        getD3Details(msg.channel,locale,utag);
-      }
-  },
   "jugenmujugenmugokonosurikekaijarisugesugematsufunfaimatsufuraimatsukurunetokoronisumiyapparikojiyapparikojibaibobaibobaiboshuringashuringanugurindaigurindainobomboribombonanojoukyuumechousuke":{
     description: 'lol :P',
     	process: function(bot,msg,suffix) {
