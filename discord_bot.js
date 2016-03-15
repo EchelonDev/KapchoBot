@@ -1568,7 +1568,7 @@ var commands = {
                             error = true;
                         }
                         if(!error) {
-                            bot.deleteMessage(msg);a bo
+                            bot.deleteMessage(msg);
         	                var msjlar = msg.channel.messages;
                             var count = 0;
                             amount++
