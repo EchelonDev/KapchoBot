@@ -676,7 +676,7 @@ var commands = {
                         }
                             msgArray.push("Kanal: " + msg.channel + " (ID: " + msg.channel.id + ")\n");
                             msgArray.push("Server: **" + msg.channel.server.id + "** (ID: " + msg.channel.server.id + ") (Ülke: " + msg.channel.server.region + ")\n");
-                            msgArray.push("Server sahibi: " + msg.channel.server.owner.name + " (ID: " + msg.channel.server.owner.id + ")\n");
+                            msgArray.push("Server sahibi: *" + msg.channel.server.owner.name + "* (ID: " + msg.channel.server.owner.id + ")\n");
                             if (msg.channel.topic) { msgArray.push("Kanal konusu: " + msg.channel.topic); }
                             bot.sendMessage(msg.channel, msgArray);
 
