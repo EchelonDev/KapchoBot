@@ -1312,6 +1312,7 @@ var commands = {
     },
     "join-server": {
         hidden: "1",
+        disabled: "1",
         usage: "<invite kod>",
         description: "invite kodu ile servere bağlan",
         process: function(bot,msg,suffix) {
@@ -1325,6 +1326,23 @@ var commands = {
                         bot.sendMessage(msg.channel,"Başarıyla katıldım! " + server);
                     }
                 }));
+            }
+        }
+    },
+    "changename": {
+        hidden: "1",
+        disabled: "1",
+        usage: "<isim>",
+        description: "botun ismini değiştir (diye düşünüyordum ama çalışmıyor .s)",
+        process: function(bot,msg,suffix) {
+            if(checkPermission(msg.sender.id,"dev")) {
+                if(suffix) {
+                    console.log("Changing bots name to : " + suffix);
+                    bot.setUsername(suffix, function (error) {
+                        bot.sendMessage(msg.channel, error);
+                    });
+                    bot.deleteMessage(msg);
+                }
             }
         }
     },
