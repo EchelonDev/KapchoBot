@@ -2007,18 +2007,5 @@ bot.on("serverNewMember", function(server, user) {
     }
 });
 
-if(isset(AuthDetails.logtoken)) {
-    bot.loginWithToken(AuthDetails.logtoken, function(err,token) {if(err) {logger.debug(err);}});
-} else {
-    bot.login(AuthDetails.email, AuthDetails.password, function(error,token) {
-        try {
-            if(isset(token)) {
-                AuthDetails["logtoken"] = token;
-                updateAuth();
-            }
-        } catch(e) {
-
-        }
-    });
-}
+bot.loginWithToken(AuthDetails.logtoken, function(err,token) {if(err) {logger.debug(err);}});
 //}
