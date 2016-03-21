@@ -4,26 +4,12 @@ log4js.replaceConsole();
 var logger = log4js.getLogger('cheese');
 //}
 // <Variables> {
-var afkList         = {},
-    alias           = {},
-    version         = "1.2.1dev",
-    banned          = {},
-    ChangeBot       = {},
-    Config          = {},
-    developers      = {},
-    gameList        = {},
+var version         = "1.2.1dev",
     jsonFolder      = './json/',
-    messagebox      = {},
-    Permissions     = {},
-    Rules           = {},
-    WhoList         = {},
     prefix          = '!',
-    osuNickNames    = {},
-    faq             = {},
     osuTrChat       = '134666472864743424',
     osuTrServer     = false,
-    playingGameList  = [],
-    gameTrackList   = {};
+    playingGameList  = [];
 //}
 // <Requires> {
 try {
@@ -60,44 +46,75 @@ var fs              = require('fs'),
 //}
 // <JSON> {
 try {
-    alias = require(jsonFolder + 'alias.json');
-} catch(e) {}
+    var alias = require(jsonFolder + 'alias.json');
+} catch(e) {
+    var alias = {}
+}
 try {
-    banned = require(jsonFolder + 'banned.json');
-} catch(e) {}
+    var banned = require(jsonFolder + 'banned.json');
+} catch(e) {
+    var banned = {};
+}
 try {
-    gameList = require(jsonFolder + "gameList.json");
-} catch(e) {}
+    var gameList = require(jsonFolder + "gameList.json");
+} catch(e) {
+    var gameList = {};
+}
 try {
-    messagebox = require(jsonFolder + "messagebox.json");
-} catch(e) {}
+    var messagebox = require(jsonFolder + "messagebox.json");
+} catch(e) {
+    var messagebox = {};
+}
 try {
-    Permissions = require(jsonFolder + "permissions.json");
-} catch(e) {}
+    var Permissions = require(jsonFolder + "permissions.json");
+} catch(e) {
+    var Permissions = {};
+}
 try {
-    Rules = require(jsonFolder + "Rules.json");
-} catch(e) {}
+    var Rules = require(jsonFolder + "Rules.json");
+} catch(e) {
+    var Rules = {};
+}
 try {
-    ChangeBot = require(jsonFolder + "ChangeBot.json");
-} catch(e) {}
+    var ChangeBot = require(jsonFolder + "ChangeBot.json");
+} catch(e) {
+    var ChangeBot = {};
+}
 try {
-    WhoList = require(jsonFolder + "WhoList.json");
-} catch(e) {}
+    var WhoList = require(jsonFolder + "WhoList.json");
+} catch(e) {
+    var WhoList = {};
+}
 try {
-    afkList = require(jsonFolder + "afkList.json");
-} catch(e) {}
+    var afkList = require(jsonFolder + "afkList.json");
+} catch(e) {
+    var afkList = {};
+}
 try {
-    developers = require(jsonFolder + "developers.json");
-} catch(e) {}
+    var developers = require(jsonFolder + "developers.json");
+} catch(e) {
+    var developers = {};
+}
 try {
-    osuNickNames = require(jsonFolder + "osuNickNames.json");
-} catch(e) {}
+    var osuNickNames = require(jsonFolder + "osuNickNames.json");
+} catch(e) {
+    var osuNickNames = {};
+}
 try {
-    faq = require(jsonFolder + "faq.json");
-} catch(e) {}
+    var nosueNickNames = require(jsonFolder + "nosueNickNames.json");
+} catch(e) {
+    var nosueNickNames = {};
+}
 try {
-    gameTrackList = require(jsonFolder + "gameTrackList.json");
-} catch(e) {}
+    var faq = require(jsonFolder + "faq.json");
+} catch(e) {
+    var faq = {};
+}
+try {
+    var gameTrackList = require(jsonFolder + "gameTrackList.json");
+} catch(e) {
+    var gameTrackList = {};
+}
 //}
 // <Required Variables> {
 var account         = AuthDetails.ttv;
@@ -120,6 +137,7 @@ function updateAlias(){updateJSON("alias.json",alias);}
 function updateBanned(){updateJSON("banned.json",banned);}
 function updateAuth(){updateJSON("auth.json",AuthDetails);}
 function updateOsuNickNames(){updateJSON("osuNickNames.json",osuNickNames);}
+function updateNosueNickNames(){updateJSON("nosueNickNames.json",nosueNickNames);}
 function updateFaq(){updateJSON("faq.json",faq);}
 function updateConfig(){updateJSON("config.json",Config);}
 function updateGameTrackList(){updateJSON("gameTrackList.json",gameTrackList);}
@@ -326,7 +344,7 @@ function getUserDetails(username,chan) {
             bot.sendMessage(chan,"**Kullanıcı bulunamadı !**");
             return false;
         }
-        var rp = "**" + response.username + "** kullanıcısının osu! profili hakkında bilgiler\n" +
+        var rp = "**" + response.username + "** kullanıcısının osu! profil bilgileri:\n" +
 
         "\n**Performans: **" + parseFloat(response.pp_raw).toFixed(2) + "pp (#" + Number(response.pp_rank).toLocaleString() + ")" +
         "\n**Ülke: **" + alpha2full(response.country) + " (#" + Number(response.pp_country_rank).toLocaleString() + ")" +
@@ -736,7 +754,7 @@ var commands = {
                         suffix = suffix.replace(">","");
                         delete banned[suffix];
                         updateBanned();
-                        bot.sendMessage(msg.channel, "**<@" + suffix + "> adlı kişinin bot komut engeli kaldırılmıştır.**");
+                        bot.sendMessage(msg.channel, "**<@" + suffix + "> kullanıcısının bot komut engeli kaldırılmıştır.**");
                     } else {
                         bot.sendMessage(msg.channel, "**Kullanıcı bulunamadı.**");
                     }
@@ -1231,15 +1249,15 @@ var commands = {
         }
     },
     "setosu": {
-        usage:"<osu kullanıcı adı>",
-        description:"Kişinin osu kullanıcı adını kaydeder.",
+        usage:"<osu! kullanıcı adı>",
+        description:"Kişinin osu! kullanıcı adını kaydeder.",
         process: function(bot,msg,suffix){
             try {
                 osuNickNames[msg.sender.id] = suffix;
                 updateOsuNickNames();
                 bot.sendMessage(msg.channel,"**" + msg.sender + ", osu! kullanıcı adınız \"" + suffix + "\" olarak kaydedilmiştir.**");
             } catch(e) {
-                 logger.debug("Error !osu at " + msg.channel + " : " + e);
+                 logger.debug("Error !setosu at " + msg.channel + " : " + e);
             }
         }
     },
@@ -1341,7 +1359,7 @@ var commands = {
                     bot.setUsername(suffix, function (error) {
                         bot.sendMessage(msg.channel, error);
                     });
-                    bot.deleteMessage(msg);
+                    bot.deleteMessage(msg);g
                 }
             }
         }
@@ -1431,15 +1449,84 @@ var commands = {
         description:"Kişinin Nosue! statlarini getirir.",
         process: function(bot,msg,suffix) {
             try {
-                if(suffix && suffix.length >= 3 && strcon(suffix)){
-                var rurl = "http://nosue.me/api/getUserStats.php?username="+ suffix +"&u=KapKeyk&p=25f9e794323b453885f5181f1b624d0b";
+                if(suffix && (suffix.indexOf("<@") == -1 && suffix.indexOf(">") == -1) && suffix.length >= 3 && suffix != "std" && suffix != "taiko" && suffix != "ctb" && suffix != "mania") {
+                    var args = suffix.split(' ');
+                    if(args.length == 1) {
+                        var user = args.shift();
+                    } else if(args.length > 1) {
+                        if(args[0] == "std" || args[0] == "taiko" || args[0] == "ctb" || args[0] == "mania") {
+                            var mod = args.shift();
+                            var user = args.join(" ");
+                        } else if(args[args.length-1] == "std" || args[args.length-1] == "taiko" || args[args.length-1] == "ctb" || args[args.length-1] == "mania"){
+                            var mod = args.pop();
+                            var user = args.join(" ");
+                        } else {
+                            var user = args.join(" ");
+                        }
+                    }
+                } else if(suffix && suffix.indexOf("<") > -1) {
+                    var args = suffix.split(' ');
+                    if(args.length == 1) {
+                        var user = args.shift();
+                        user = user.substring(2, user.indexOf(">"));
+                        if(nosueNickNames.hasOwnProperty(user)) {
+                            user = nosueNickNames[user];
+                        }
+                    } else if(args.length == 2) {
+                        var mod = args.shift();
+                        if(mod == "std" || mod == "taiko" || mod == "ctb" || mod == "mania") {
+                            var user = args.shift();
+                        } else {
+                            var user = mod;
+                            var mod = args.shift();
+                        }
+                        user = user.substring(2, user.indexOf(">"));
+                        if(nosueNickNames.hasOwnProperty(user)) {
+                            user = nosueNickNames[user];
+                        }
+                    }
+				} else if(nosueNickNames.hasOwnProperty(msg.sender.id)) {
+                    var user = nosueNickNames[msg.sender.id];
+                    if(suffix) {
+                        var mod = suffix;
+                    }
+                }
+                while(user.indexOf(' ') > -1) {
+                    user = user.replace(' ', '_');
+                }
+                if(user && user.length >= 3 && strcon(user)){
+                var rurl = "http://nosue.me/api/getUserStats.php?username="+ user +"&u=KapKeyk&p=25f9e794323b453885f5181f1b624d0b";
                 var response = request({url: rurl,json: true }, function (error, response, body) {
                                 var rbody = response.body;
                                 if(rbody.success) {
-                                    var text = "**Std:** " + " #" + rbody["rankSTD"].toLocaleString() + " ( " + rbody["accuracySTD"].toLocaleString() + "% )" + "\n";
-                                    text += "**Taiko:** " + " #" + rbody["rankTaiko"].toLocaleString() + " ( " + rbody["accuracyTaiko"].toLocaleString() + "% )" + "\n";
-                                    text += "**Ctb:** " + " #" + rbody["rankCTB"].toLocaleString() + " ( " + rbody["accuracyCTB"].toLocaleString() + "% )" + "\n";
-                                    text += "**Mania:** " + " #" + rbody["rankMania"].toLocaleString() + " ( " + rbody["accuracyMania"].toLocaleString() + "% )" + "\n";
+                                    var text = "";
+                                    if(user && user.length >= 3 && strcon(user) && (mod == null || mod == "" || mod == "std")){
+                                        text =  "**" + rbody.username + "** kullanıcısının standart mod nosue! bilgileri:\n" +
+                                                "\n**Sıralama: **#" + rbody.rankSTD.toLocaleString() +
+                                                "\n**Skor: **" + Number(rbody.rankedScoreSTD).toLocaleString() + " puan" +
+                                                "\n**İsabetlilik: **%" + rbody.accuracySTD +
+                                                "\nhttps://nosue.me/u/" + rbody.userID;
+                                    } else if(user && user.length >= 3 && strcon(user) && mod == "taiko") {
+                                        text =  "**" + rbody.username + "** kullanıcısının taiko mod nosue! bilgileri:\n" +
+                                                "\n**Sıralama: **#" + rbody.rankTaiko.toLocaleString() +
+                                                "\n**Skor: **" + Number(rbody.rankedScoreTaiko).toLocaleString() + " puan" +
+                                                "\n**İsabetlilik: **%" + rbody.accuracyTaiko +
+                                                "\nhttps://nosue.me/u/" + rbody.userID;
+                                    } else if(user && user.length >= 3 && strcon(user) && mod == "ctb") {
+                                        text =  "**" + rbody.username + "** kullanıcısının ctb mod nosue! bilgileri:\n" +
+                                                "\n**Sıralama: **#" + rbody.rankCTB.toLocaleString() +
+                                                "\n**Skor: ** " + Number(rbody.rankedScoreCTB).toLocaleString() + " puan" +
+                                                "\n**İsabetlilik: **%" + rbody.accuracyCTB +
+                                                "\nhttps://nosue.me/u/" + rbody.userID;
+                                    } else if(user && user.length >= 3 && strcon(user) && mod == "mania") {
+                                        text =  "**" + rbody.username + "** kullanıcısının mania mod nosue! bilgileri:\n" +
+                                                "\n**Sıralama: **#" + rbody.rankMania.toLocaleString() +
+                                                "\n**Skor: ** " + Number(rbody.rankedScoreMania).toLocaleString() + " puan" +
+                                                "\n**İsabetlilik: **%" + rbody.accuracyMania +
+                                                "\nhttps://nosue.me/u/" + rbody.userID;
+                                    } else {
+                                        bot.sendMessage(msg.channel, "Lütfen düzgün bir isim giriniz, \"!nosue KapKeyk\" gibi. / ");
+                                    }
                                     bot.sendMessage(msg.channel,text);
                                 } else {
                                     var text = "**Kişi bulunamadı**";
@@ -1451,6 +1538,19 @@ var commands = {
                 }
             } catch (e) {
                 logger.debug("Error !nosue at " + msg.channel + " : " + e);
+            }
+        }
+    },
+    "setnosue": {
+        usage:"<nosue! kullanıcı adı>",
+        description:"Kişinin nosue! kullanıcı adını kaydeder.",
+        process: function(bot,msg,suffix){
+            try {
+                nosueNickNames[msg.sender.id] = suffix;
+                updateNosueNickNames();
+                bot.sendMessage(msg.channel,"**" + msg.sender + ", nosue! kullanıcı adınız \"" + suffix + "\" olarak kaydedilmiştir.**");
+            } catch(e) {
+                 logger.debug("Error !setnosue at " + msg.channel + " : " + e);
             }
         }
     },
