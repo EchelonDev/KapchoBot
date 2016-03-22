@@ -1808,6 +1808,10 @@ var caps = {
         path: "nonfic/",
         name: "rip.png"
     },
+    "huehue": {
+        path: "nonfic/",
+        name: "huehue.jpg"
+    },
     "cahil": {
         process: function() { return ("./caps/cahil/" + (Math.floor(Math.random() * 21)).toString() + ".jpg"); }
     },
