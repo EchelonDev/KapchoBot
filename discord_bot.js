@@ -1289,7 +1289,7 @@ var commands = {
         process: function(bot, msg, suffix) {
             try {
                 logger.debug("Sending !ping to " + msg.channel);
-                bot.sendMessage(msg, msg.author + ",pong!", (e, sentMsg) => { bot.updateMessage(sentMsg, msg.author + ",pong!" + "\t|\t Process Time: " + (sentMsg.timestamp - msg.timestamp) + "ms") });
+                bot.sendMessage(msg, msg.author + ", pong!", (e, sentMsg) => { bot.updateMessage(sentMsg, msg.author + ", pong!" + "\t|\t Process Time: " + (sentMsg.timestamp - msg.timestamp) + "ms") });
             } catch(e) {
                 logger.debug("Error !ping at " + msg.channel + " : " + e);
             }
