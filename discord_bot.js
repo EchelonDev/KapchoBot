@@ -122,6 +122,8 @@ var bot             = new Discord.Client();
 var ttvc            = new TwitchClient(account);
 var osuApi          = new Osu.api({apiKey: '4d10da6e0779eada0ca9000f709b612f4643e7fe'});
 var child_process   = require("child_process");
+var Rwg             = require('random-word-generator');
+var generator       = new Rwg();
 //}
 // <UpdateFile> {
 function updateJSON(fnjson, fjson) {
@@ -1435,6 +1437,16 @@ var commands = {
                 bot.sendMessage(msg.channel, date.getHours() + ":" + date.getMinutes());
             } catch (e) {
                 logger.debug("Error !saat at " + msg.channel + " : " + e);
+            }
+        }
+    },
+    "random": {
+        hidden:"1",
+        process: function(bot,msg,suffix) {
+            try {
+                bot.sendMessage(msg.channel, generator.generate());
+            } catch (e) {
+                logger.debug("Error !random at " + msg.channel + " : " + e);
             }
         }
     },
