@@ -2128,7 +2128,11 @@ bot.on("presence", function(oldUser, newUser) {
                     if(playingGameList.length > 5) {
                         playingGameList.shift();
                     }
-                    bot.sendMessage(osuTrChat, "**" + newUser.name + "** \"" + newUser.game.name + "\" oynamaya başladı!");
+                    bot.sendMessage(osuTrChat, "**" + newUser.name + "** \"" + newUser.game.name + "\" oynamaya başladı!", (e, sentMsg) => {
+                        setTimeout(function() {
+                            bot.deleteMessage(sentMsg);
+                        }, 2 * 60 * 60 * 1000);
+                    });
                 }
             }
 	    }
