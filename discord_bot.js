@@ -26,6 +26,7 @@ try {
 	process.exit();
 }
 
+var Config = {};
 try{
 	Config = require(jsonFolder + "config.json");
 } catch(e){ //no config file, use defaults
