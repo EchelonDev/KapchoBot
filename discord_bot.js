@@ -25,6 +25,7 @@ try {
 	logger.debug("Please create an auth.json like auth.json.example with at least an email and password.");
 	process.exit();
 }
+
 try{
 	Config = require(jsonFolder + "config.json");
 } catch(e){ //no config file, use defaults
@@ -1614,9 +1615,7 @@ var commands = {
 			            var cevap = args.join(' ');
                         faq[soru.toLowerCase()] = cevap;
                         updateFaq();
-                        bot.sendMessage(msg.channel, "**Faq listesine \"" + soru + "\" eklendi.**");
-                    } else {
-                    bot.sendMessage(msg.channel,"**Bu komutu kullanmak için gerekli yetkiye sahip değilsiniz.**");
+                        bot.sendMessage(msg.channel, "Faq listesine **\"" + soru + "\" eklendi.");
                     }
                 } else if(suffix.startsWith("sil ")) {
                     if(checkPermission(msg.sender.id, "admin")) {
@@ -1626,12 +1625,10 @@ var commands = {
                         if(faq.hasOwnProperty(soru)) {
                             delete faq[soru.toLowerCase()];
                             updateFaq();
-                            bot.sendMessage(msg.channel, "**Faq listesinden \"" + soru + "\" silindi.**");
+                            bot.sendMessage(msg.channel, "Faq listesinden **\"" + soru + "\"** silindi.");
                         } else {
-                            bot.sendMessage(msg.channel, "**\"" + soru + "\" faq listesinde mevcut değil.**");
+                            bot.sendMessage(msg.channel, "**\"" + soru + "\"** faq listesinde mevcut değil.");
                         }
-                    } else {
-                    bot.sendMessage(msg.channel,"**Bu komutu kullanmak için gerekli yetkiye sahip değilsiniz.**");
                     }
                 } else if(suffix == "liste detay") {
                         bot.sendMessage(msg.sender, "```JSON\n" + JSON.stringify(faq, null, 2) + "```");
@@ -1653,12 +1650,10 @@ var commands = {
                     }
                     if(faq.hasOwnProperty(soru)) {
                         if(!mention) {
-                            bot.sendMessage(msg.channel, "**" + faq[soru] + "**");
+                            bot.sendMessage(msg.channel, faq[soru]);
                         } else {
-                            bot.sendMessage(msg.channel, "**" + mention + ", " + faq[soru] + "**");
+                            bot.sendMessage(msg.channel, mention + ", " + faq[soru]);
                         }
-                    } else {
-                        bot.sendMessage(msg.channel, "**" + msg.sender + ", \"" + soru + "\" faq listesinde mevcut değil.**");
                     }
                 }
             }
