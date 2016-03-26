@@ -7,7 +7,8 @@ var logger = log4js.getLogger('cheese');
 var version         = "1.2.1dev",
     jsonFolder      = './json/',
     prefix          = '!',
-    osuTrChat       = /*'134666472864743424',*/ "154296634451165184",
+    osuTrChat       = "134666472864743424",
+    //osuTrChat       = "154296634451165184", //benim debug botu için #kapcho_debug kanalı kodu - bugra
     osuTrServer     = false,
     playingGameList  = [];
 //}
@@ -2014,9 +2015,9 @@ bot.on("message", function (msg) {
 			        if(afkList.hasOwnProperty(users[i].id)) {
 			            if(afkList[users[i].id].status == "AFK") {
 		                    if(afkList[users[i].id].message) {
-		                        bot.sendMessage(msg.channel, "**" + msg.sender + ", " + users[i] + " kullanıcısı AFK ve şu mesajı bırakmış: \"" +     afkList[users[i].id].message + "\"**");
+		                        bot.sendMessage(msg.channel, msg.sender + ", **" + users[i].name + "** kullanıcısı AFK ve şu mesajı bırakmış: \"" +     afkList[users[i].id].message + "\"");
 		                    } else {
-			                    bot.sendMessage(msg.channel, "**" + msg.sender + ", " + users[i] + " kullanıcısı AFK ve muhtemelen sizin @mention'unuza cevap veremez.**");
+			                    bot.sendMessage(msg.channel, msg.sender + ", **" + users[i].name  + "** kullanıcısı AFK ve muhtemelen sizin @mention'unuza cevap veremez.");
 		                    }
 			            } else if(afkList[users[i].id].status == "AFKT") {
 			                var h = parseInt(afkList[users[i].id].afkTime.hours, 10);
@@ -2031,15 +2032,15 @@ bot.on("message", function (msg) {
 					        h = parseInt(afkTime.hours, 10);
 					        m = parseInt(afkTime.minutes, 10);
 			                if(afkList[users[i].id].message) {
-			                    if(h && m && h > 0 && m > 0) bot.sendMessage(msg.channel, "**" + msg.sender + ", " + users[i] + " kullanıcısı AFK ve muhtemelen " + h + " saat " + m + " dakika sonra (" + date1.getHours() + ":" + date1.getMinutes() + ") geri dönecek. Ayrıca, bu mesajı bırakmış: \"" + afkList[users[i].id].message + "\"**");
-		                        else if(h && h > 0) bot.sendMessage(msg.channel, "**" + msg.sender + ", " + users[i] + " kullanıcısı AFK ve muhtemelen " + h + " saat sonra (" + date1.getHours() + ":" + date1.getMinutes() + ") geri dönecek. Ayrıca, bu mesajı bırakmış: \"" + afkList[users[i].id].message + "\"**");
-		                        else if(m && m > 0 && h >= 0) bot.sendMessage(msg.channel, "**" + msg.sender + ", " + users[i] + " kullanıcısı AFK ve muhtemelen " + m + " dakika sonra (" + date1.getHours() + ":" + date1.getMinutes() + ") geri dönecek. Ayrıca, bu mesajı bırakmış: \"" + afkList[users[i].id].message + "\"**");
-		                        else bot.sendMessage(msg.channel, "**" + msg.sender + ", " + users[i] + " kullanıcısı AFK fakat şimdiye kadar dönmüş olması lazımdı. (" + date1.getHours() + ":" + date1.getMinutes() + ") Kullanıcı bu mesajı bırakmış: \"" + afkList[users[i].id].message + "\"**");/*ve muhtemelen " + h + " saat " + m + " dakika sonra (" + date1.getHours() + ":" + date1.getMinutes() + ") geri dönecek. Ayrıca, bu mesajı bırakmış: \"" + afkList[users[i].id].message + "\"** (<@134987945827368960> mümkün olmayan kod)");*/
+			                    if(h && m && h > 0 && m > 0) bot.sendMessage(msg.channel, msg.sender + ", **" + users[i].name  + "** kullanıcısı AFK ve muhtemelen " + h + " saat " + m + " dakika sonra (" + date1.getHours() + ":" + date1.getMinutes() + ") geri dönecek. Ayrıca, bu mesajı bırakmış: \"" + afkList[users[i].id].message + "\"");
+		                        else if(h && h > 0) bot.sendMessage(msg.channel, "**" + msg.sender + ", **" + users[i].name  + "** kullanıcısı AFK ve muhtemelen " + h + " saat sonra (" + date1.getHours() + ":" + date1.getMinutes() + ") geri dönecek. Ayrıca, bu mesajı bırakmış: \"" + afkList[users[i].id].message + "\"");
+		                        else if(m && m > 0 && h >= 0) bot.sendMessage(msg.channel, msg.sender.name + ", **" + users[i].name + "** kullanıcısı AFK ve muhtemelen " + m + " dakika sonra (" + date1.getHours() + ":" + date1.getMinutes() + ") geri dönecek. Ayrıca, bu mesajı bırakmış: \"" + afkList[users[i].id].message + "\"");
+		                        else bot.sendMessage(msg.channel, msg.sender.name + ", **" + users[i].name + "** kullanıcısı AFK fakat şimdiye kadar dönmüş olması lazımdı. (" + date1.getHours() + ":" + date1.getMinutes() + ") Kullanıcı bu mesajı bırakmış: \"" + afkList[users[i].id].message + "\"");
 		                    } else {
-		                        if(h && m && h > 0 && m > 0) bot.sendMessage(msg.channel, "**" + msg.sender + ", " + users[i] + " kullanıcısı AFK ve muhtemelen " + h + " saat " + m + " dakika sonra (" + date1.getHours() + ":" + date1.getMinutes() + ") geri dönecek.**");
-		                        else if(h && h > 0) bot.sendMessage(msg.channel, "**" + msg.sender + ", " + users[i] + " kullanıcısı AFK ve muhtemelen " + h + " saat sonra (" + date1.getHours() + ":" + date1.getMinutes() + ") geri dönecek.**");
-		                        else if(m && m > 0 && h >= 0) bot.sendMessage(msg.channel, "**" + msg.sender + ", " + users[i] + " kullanıcısı AFK ve muhtemelen " + m + " dakika sonra (" + date1.getHours() + ":" + date1.getMinutes() + ") geri dönecek.**");
-		                        else bot.sendMessage(msg.channel, "**" + msg.sender + ", " + users[i] + " kullanıcısı AFK fakat şimdiye kadar dönmüş olması lazımdı. (" + date1.getHours() + ":" + date1.getMinutes() + ")**");/*ve muhtemelen " + h + " saat " + m + " dakika sonra (" + date1.getHours() + ":" + date1.getMinutes() + ") geri dönecek.** (<@134987945827368960> mümkün olmayan kod)");*/
+		                        if(h && m && h > 0 && m > 0) bot.sendMessage(msg.channel, msg.sender + ", **" + users[i].name + "** kullanıcısı AFK ve muhtemelen " + h + " saat " + m + " dakika sonra (" + date1.getHours() + ":" + date1.getMinutes() + ") geri dönecek.");
+		                        else if(h && h > 0) bot.sendMessage(msg.channel, msg.sender + ", **" + users[i].name + "** kullanıcısı AFK ve muhtemelen " + h + " saat sonra (" + date1.getHours() + ":" + date1.getMinutes() + ") geri dönecek.");
+		                        else if(m && m > 0 && h >= 0) bot.sendMessage(msg.channel, msg.sender + ", **" + users[i].name + "** kullanıcısı AFK ve muhtemelen " + m + " dakika sonra (" + date1.getHours() + ":" + date1.getMinutes() + ") geri dönecek.");
+		                        else bot.sendMessage(msg.channel, msg.sender + ", **" + users[i].name + "** kullanıcısı AFK fakat şimdiye kadar dönmüş olması lazımdı. (" + date1.getHours() + ":" + date1.getMinutes() + ")");
 		                    }
 			            }
 	                }
@@ -2118,8 +2119,6 @@ bot.on("presence", function(oldUser, newUser) {
 	    	    }
             }
 	    }
-        console.log(newUser.name + "\"" + newUser.game.name + "\" oynamaya başladı!");
-        console.log(osuTrChat + " " + osuTrServer + " " + Config.trackOsu);
 	    if(Config.trackOsu && oldUser.game != newUser.game && newUser.game.name == "osu!") {
 	        if(osuTrChat && osuTrServer) {
                 if(osuTrServer.members.has(newUser) && playingGameList.indexOf(newUser.id) == -1) {
