@@ -7,7 +7,7 @@ var logger = log4js.getLogger('cheese');
 var version         = "1.2.1dev",
     jsonFolder      = './json/',
     prefix          = '!',
-    osuTrChat       = '134666472864743424',
+    osuTrChat       = /*'134666472864743424',*/ "154296634451165184",
     osuTrServer     = false,
     playingGameList  = [];
 //}
@@ -29,7 +29,7 @@ try{
 } catch(e){ //no config file, use defaults
 	Config.debug = false;
 	Config.respondToInvalid = false;
-	Config.trackGames = true;
+	Config.trackOsu = true;
 	Config.trackLogin = false;
 	updateConfig();
 }
@@ -122,8 +122,8 @@ var bot             = new Discord.Client();
 var ttvc            = new TwitchClient(account);
 var osuApi          = new Osu.api({apiKey: '4d10da6e0779eada0ca9000f709b612f4643e7fe'});
 var child_process   = require("child_process");
-var Rwg             = require('random-word-generator');
-var generator       = new Rwg();
+/*var Rwg             = require('random-word-generator');
+var generator       = new Rwg();*/
 //}
 // <UpdateFile> {
 function updateJSON(fnjson, fjson) {
@@ -1440,8 +1440,9 @@ var commands = {
             }
         }
     },
-    "random": {
+    /*"random": {
         hidden:"1",
+        disabled:"1",
         process: function(bot,msg,suffix) {
             try {
                 bot.sendMessage(msg.channel, generator.generate());
@@ -1449,7 +1450,7 @@ var commands = {
                 logger.debug("Error !random at " + msg.channel + " : " + e);
             }
         }
-    },
+    },*/
     "nosue": {
         usage:"<isim>",
         description:"Kişinin Nosue! statlarini getirir.",
@@ -1736,26 +1737,22 @@ var commands = {
 	        try {
 	            if(checkPermission(msg.sender.id, "admin")) {
 	                if(suffix == "osu!") {
-	                    if(Config.trackGames) {
-	                        Config.trackGames = false;
+	                    if(Config.trackOsu) {
+	                        Config.trackOsu = false;
 	                        bot.sendMessage(msg.channel, "**osu!** oyununu takip etme bırakıldı.");
                             playingGameList = [];
-                            updateConfig();
 	                    } else {
-	                        Config.trackGames = true;
+	                        Config.trackOsu = true;
 	                        bot.sendMessage(msg.channel, "**osu!** oyunu takip ediliyor.");
-                            updateConfig();
 	                    }
 	                    updateConfig();
 	                } else if(suffix == "login") {
 	                    if(Config.trackLogin) {
 	                        Config.trackLogin = false;
 	                        bot.sendMessage(msg.channel, "Kullanıcı giriş çıkışlarını takip etme bırakıldı.");
-                            updateConfig();
 	                    } else {
-	                        Config.trackGames = true;
+	                        Config.trackLogin = true;
 	                        bot.sendMessage(msg.channel, "Kullanıcı giriş çıkışları takip ediliyor.");
-                            updateConfig();
 	                    }
 	                    updateConfig();
 	                }
@@ -1843,7 +1840,7 @@ bot.on("ready", function () {
 	var gtp = Math.floor(Math.random() * Object.keys(gameList).length) + 1;
 	bot.setPlayingGame(gameList[gtp]);
     if(!osuTrServer) {
-        osuTrServer = bot.servers.get("id", osuTrChat);
+        osuTrServer = bot.servers.get("id", "134666472864743424");
     }
 });
 
@@ -2121,17 +2118,19 @@ bot.on("presence", function(oldUser, newUser) {
 	    	    }
             }
 	    }
-	    if(Config.trackGames && oldUser.game != newUser.game && newUser.game.name == "osu!") {
+        console.log(newUser.name + "\"" + newUser.game.name + "\" oynamaya başladı!");
+        console.log(osuTrChat + " " + osuTrServer + " " + Config.trackOsu);
+	    if(Config.trackOsu && oldUser.game != newUser.game && newUser.game.name == "osu!") {
 	        if(osuTrChat && osuTrServer) {
                 if(osuTrServer.members.has(newUser) && playingGameList.indexOf(newUser.id) == -1) {
                     playingGameList.push(newUser.id);
                     if(playingGameList.length > 5) {
                         playingGameList.shift();
                     }
-                    bot.sendMessage(osuTrChat, "**" + newUser.name + "** \"" + newUser.game.name + "\" oynamaya başladı!", (e, sentMsg) => {
+                    bot.sendMessage(osuTrChat, "**" + newUser.name + "** \"" + newUser.game.name + "\" oynamaya başladı!", function (e, sentMsg) {
                         setTimeout(function() {
-                            bot.deleteMessage(sentMsg);
-                        }, 2 * 60 * 60 * 1000);
+                            bot.deleteMessage(sentMsg)
+                        }, 1800000);
                     });
                 }
             }
