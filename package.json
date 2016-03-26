@@ -9,7 +9,7 @@
   "license": "GNU",
   "dependencies": {
     "countryjs": "1.5.2",
-    "discord.js": "hydrabolt/discord.js#indev",
+    "discord.js": "github:hydrabolt/discord.js#indev",
     "log4js": "0.6.31",
     "node-twitchtv": "jbueza/node-twitchtv",
     "nodesu": "^0.2.1",
