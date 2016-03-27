@@ -26,6 +26,7 @@ try {
 	process.exit();
 }
 
+var Config = {};
 try{
 	Config = require(jsonFolder + "config.json");
 } catch(e){ //no config file, use defaults
@@ -1347,9 +1348,8 @@ var commands = {
     },
     "changename": {
         hidden: "1",
-        disabled: "1",
         usage: "<isim>",
-        description: "botun ismini değiştir (diye düşünüyordum ama çalışmıyor .s)",
+        description: "botun ismini değiştir (diye düşünüyordum ama şu an çalışıyor mu daha test etmedim)",
         process: function(bot,msg,suffix) {
             if(checkPermission(msg.sender.id,"dev")) {
                 if(suffix) {
@@ -1357,7 +1357,7 @@ var commands = {
                     bot.setUsername(suffix, function (error) {
                         bot.sendMessage(msg.channel, error);
                     });
-                    bot.deleteMessage(msg);g
+                    bot.deleteMessage(msg);
                 }
             }
         }
@@ -2100,7 +2100,7 @@ bot.on("presence", function(oldUser, newUser) {
 	    else if(oldUser.status != "offline" && newUser.status == 'offline') {
 	    	if(afkList.hasOwnProperty(newUser.id)) {
 	    		var channel = bot.channels.get("id", afkList[newUser.id].channel);
-	    		bot.sendMessage(channel,"**"+ newUser + " AFK iken Discord'dan çıktı.**");
+	    		bot.sendMessage(channel,"**"+ newUser.name + " AFK iken Discord'dan çıktı.**");
 	    		delete afkList[newUser.id];
 	    		updateAfkList();
 	    	} else {
