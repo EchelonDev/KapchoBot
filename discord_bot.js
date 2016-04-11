@@ -358,6 +358,7 @@ function getUserDetails(username,chan) {
         "\n**Toplam puan: **" + Number(response.total_score).toLocaleString() + " puan" +
         "\n**İsabetlilik: **" + "%" + parseFloat(response.accuracy).toFixed(2) +
         "\n**Oynama sayısı: **" + Number(response.playcount).toLocaleString() +
+        "\n**Oynama saati: **" + Number(response.playtime).toLocaleString() +
         "\n**Toplam hit sayısı: **" + (parseInt(response.count300, 10) + parseInt(response.count100, 10) + parseInt(response.count50, 10)).toLocaleString() +
         "\n**SS: **" + Number(response.count_rank_ss).toLocaleString() +
         "** S: **" + Number(response.count_rank_s).toLocaleString() +
