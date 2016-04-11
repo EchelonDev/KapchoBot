@@ -352,7 +352,7 @@ function getUserDetails(username,chan) {
         var rp = "**" + response.username + "** kullanıcısının osu! profil bilgileri:\n" +
 
         "\n**Performans: **" + parseFloat(response.pp_raw).toFixed(2) + "pp (#" + Number(response.pp_rank).toLocaleString() + ")" +
-        "\n**Ülke: **" + alpha2full(response.country) + " :flag_" + response.country + ": (#" + Number(response.pp_country_rank).toLocaleString() + ")" +
+        "\n**Ülke: **" + alpha2full(response.country) + " :flag_" + response.country.toLowerCase() + ": (#" + Number(response.pp_country_rank).toLocaleString() + ")" +
         "\n**Seviye: **" + parseFloat(response.level).toFixed(2) +
         "\n**Sıralama puanı: **" + Number(response.ranked_score).toLocaleString() + " puan" +
         "\n**Toplam puan: **" + Number(response.total_score).toLocaleString() + " puan" +
