@@ -478,6 +478,7 @@ var commands = {
   },
   "gitpull": {
     hidden:"1",
+    delete:"1",
 		usage: "<command>",
 		description: 'Executes arbitrary javascript in the bot process. User must have "eval" permission',
 		process: function(bot,msg,suffix) {
@@ -1812,6 +1813,7 @@ var caps = {
     },
     "rip": {
         path: "nonfic/",
+        delete: true,
         name: "rip.png"
     },
     "huehue": {
@@ -1976,7 +1978,7 @@ bot.on("message", function (msg) {
 		} else if(caps.hasOwnProperty(cmdTxt)) {
 		    try {
 		        var cap = caps[cmdTxt];
-                if(cmdTxt == "bangif") {
+                if(cmdTxt == "bangif" || cap.delete) {
                     bot.deleteMessage(msg);
                 }
 		        if(cap.hasOwnProperty("process")) {
