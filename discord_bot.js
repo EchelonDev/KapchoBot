@@ -34,6 +34,7 @@ try{
 	Config.respondToInvalid = false;
 	Config.trackOsu = true;
 	Config.trackLogin = false;
+    Config.osuApi = false;
 	updateConfig();
 }
 
@@ -118,12 +119,19 @@ try {
 } catch(e) {
     var gameTrackList = {};
 }
+
+if(Config.osuApi) {
+    var osuApi = new Osu.api({apiKey:Config.osuApi});
+} else {
+    logger.debug("osuApi is missing in config.json");
+	process.exit();
+}
+
 //}
 // <Required Variables> {
 var account         = AuthDetails.ttv;
 var bot             = new Discord.Client();
 var ttvc            = new TwitchClient(account);
-var osuApi          = new Osu.api({apiKey: '4d10da6e0779eada0ca9000f709b612f4643e7fe'});
 var child_process   = require("child_process");
 /*var Rwg             = require('random-word-generator');
 var generator       = new Rwg();*/
